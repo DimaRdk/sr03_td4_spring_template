@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/eO8pgem5ud5v5ync/y" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link th:rel="stylesheet" th:href="@{assets/datatable/datatables.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+
+<body>
+<header>
+    <div class="container">
+        <h1 class="page-title mt-4 mb-4">Administration</h1>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+        <div class="container">
+
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/admin/createUser}">Création d'un nouvel utilisateur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/admin}">Liste des utilisateurs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/admin/disabled-users}">Liste des comptes d'utilisateurs désactivés</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="container mt-4">
+    <div class="span12">
+        <table id="myTableId" dt:table="true" class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user?.firstName}">1</td>
+                <td th:text="${user?.lastName}">Doe</td>
+                <td th:text="${user?.mail}">John</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

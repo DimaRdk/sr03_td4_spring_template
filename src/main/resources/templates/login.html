@@ -20,7 +20,19 @@
                    th:field="*{password}"
                    th:class="'form-control' + ${invalid != null && invalid ? ' is-invalid' : ''}"
                    required>
-            <div class="invalid-feedback">Login ou mot de passe incorrect</div>
+
+        </div>
+        <div th:if="${invalidLogin}" class="alert alert-danger">
+            Identifiant incorrect. Veuillez réessayer.
+        </div>
+        <div th:if="${invalidPassword}" class="alert alert-danger">
+            Mot de passe incorrect. Veuillez réessayer.
+        </div>
+        <div th:if="${blocked}" class="alert alert-danger">
+            Trop de tentatives infructueuses. Votre compte est temporairement bloqué.
+        </div>
+        <div th:if="${shortPassword}" class="alert alert-danger">
+            La longueur du mot de passe est insuffisante.
         </div>
         <button type="submit" class="btn btn-primary w-100">Connexion</button>
     </form>
