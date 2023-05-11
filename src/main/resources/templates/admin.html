@@ -24,7 +24,9 @@
                         <a class="nav-link" href="#" th:href="@{/admin/createUser}">Création d'un nouvel utilisateur</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link selected" href="#" th:href="@{/admin}" style="color: inherit;">Liste des utilisateurs</a>
+                        <div class="selected">
+                            <a class="nav-link" href="#" th:href="@{/admin}">Liste des utilisateurs</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" th:href="@{/admin/disabled-users}">Liste des comptes d'utilisateurs désactivés</a>
@@ -42,6 +44,7 @@
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Email</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -49,6 +52,9 @@
                 <td th:text="${user?.firstName}">1</td>
                 <td th:text="${user?.lastName}">Doe</td>
                 <td th:text="${user?.mail}">John</td>
+                <td>
+                    <a class="edit-btn" th:href="@{/admin/edit/{id}(id=${user.id})}" role="button">Modifier</a>
+                </td>
             </tr>
             </tbody>
         </table>

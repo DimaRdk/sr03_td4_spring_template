@@ -93,15 +93,10 @@ public class TestController {
         newUser.setLastName("REDONCULE");
         newUser.setMail("sr@test.com");
         newUser.setPassword("sr");
-        newUser.setAdmin(true);
+
         LOGGER.info(newUser.getFirstName() + " " + newUser.getLastName() + " inserted");
 
-        LOGGER.info("=== ALL USERS (2) ===");
-        userRepository.save(newUser);
-        List<User> usersApresInsert = userRepository.findAll();
-        usersApresInsert.forEach(user -> {
-            LOGGER.info(user.getFirstName() + " : " + user.isAdmin());
-        });
+
 
         return "ok";
     }
