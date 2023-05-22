@@ -90,7 +90,13 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             return "redirect:/admin/createUser";
         }
-        String password = generateRandomString();
+
+        User testPasswd;
+        String password;
+        do{
+            password = generateRandomString();
+            testPasswd = userRepository.findByPassword(password);
+        }while(testPasswd != null);
 
         user.setPassword(password);
 
@@ -116,5 +122,57 @@ public class AdminController {
         }
 
         return sb.toString();
+    }
+
+    @GetMapping("editUser")
+    public String getEditForm(@RequestParam Long id, Model model) {
+        Optional<User> toEdit = userRepository.findById(id);
+        if (toEdit.isPresent()){
+            User user = toEdit.get();
+            model.addAttribute("user", user);
+            return "editUser";
+        }
+        System.out.println("Erreur lors de la récupération de l'utilisateur "+id+" à modifier");
+        return "redirect:/admin";
+    }
+
+    @PostMapping("editUser")
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Erreur lors de la modification d'un utilisateur");
+            return "redirect:/admin";
+        }
+        Optional<User> toUpdate = userRepository.findById(user.getId());
+        User toSave;
+        if (toUpdate.isPresent()){
+            toSave = toUpdate.get();
+        }else{
+            System.out.println("Erreur lors de la récupération de l'utilisateur d'id :"+user.getId()+" lors de sa modification");
+            return "redirect:/admin";
+        }
+        // Passage des nouvelles valeurs
+        toSave.setFirstName(user.getFirstName());
+        toSave.setLastName(user.getLastName());
+        toSave.setMail(user.getMail());
+        if (!user.getPassword().isEmpty()){
+            toSave.setPassword(user.getPassword());
+        }
+
+        // Effectuer des vérifications supplémentaires avant d'ajouter l'user à la base de données
+        User testUniq = userRepository.findByMail(toSave.getMail());
+        if (testUniq != null){
+            if (testUniq.getId() != toSave.getId()){
+                System.out.println("Le mail selectionné n'est pas valide");
+                return "redirect:/admin";
+            }
+        }
+        // Ajouter l'user à la base de données
+
+        // Envoyer un e-mail de confirmation avec le mot de passe temporaire
+        // TODO
+        System.out.println("Modification de l'utilisateur réussie");
+
+        userRepository.save(toSave);
+        return "redirect:/admin";
     }
 }
