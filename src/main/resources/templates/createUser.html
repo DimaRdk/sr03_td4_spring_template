@@ -51,8 +51,14 @@
     <span th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error-text"></span>
   </div>
   <div class="mb-3">
+    <label for="admin">Admin :</label>
+    <input type="checkbox" id="admin" th:field="*{admin}">
+  </div>
+
+  <div class="mb-3">
     <button type="submit" class="submit-btn">Créer l'utilisateur</button>
   </div>
+
 </form>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.SecureRandom;
@@ -77,7 +78,7 @@ public class AdminController {
     }
 
     @PostMapping("createUser")
-    public String createUser(@Valid User user, BindingResult bindingResult) {
+    public String createUser(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             System.out.println("Erreur lors de la création d'un utilisateur");
             return "createUser";
@@ -96,10 +97,12 @@ public class AdminController {
         user.setPassword(password);
 
         // Ajouter l'user à la base de données
-        userRepository.save(user);
+
         // Envoyer un e-mail de confirmation avec le mot de passe temporaire
         // TODO
-        return "confirmation";
+        userRepository.save(user);
+   
+        return "redirect:/admin";
     }
 
 

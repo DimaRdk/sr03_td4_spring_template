@@ -71,6 +71,7 @@ public class User {
         admin = false;
     }
 
+
     public long getId() {
         return id;
     }
@@ -124,6 +125,9 @@ public class User {
         return admin;
     }
 
+    public void setAdmin(boolean admin){
+        this.admin = admin;
+    }
     public List<Chat> getCreatedChat() {
         return createdChat;
     }
