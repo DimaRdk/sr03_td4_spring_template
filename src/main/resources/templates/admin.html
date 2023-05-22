@@ -35,11 +35,11 @@
                     </li>
                     <li class="nav-item">
                         <div class="selected">
-                            <a class="nav-link" href="#" th:href="@{/admin}">Liste des utilisateurs</a>
+                            <a class="nav-link" href="#">Liste des utilisateurs</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{/admin/disabled-users}">Liste des comptes d'utilisateurs désactivés</a>
+                        <a class="nav-link" href="#" th:href="@{/admin/disabledUsers}">Liste des comptes d'utilisateurs désactivés</a>
                     </li>
                 </ul>
             </div>
@@ -64,8 +64,8 @@
                 <td th:text="${user?.mail}">John</td>
                 <td>
                     <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a>
-                    <a class="delete-btn" th:href="@{/admin/delete?id={id}(id=${user.id})}" role="button" th:background="red">Supprimer</a>
-                    <a class="disable-btn" th:href="@{/admin/disable?id={id}(id=${user.id})}" role="button">Désactiver</a>
+                    <a class="delete-btn" th:href="@{/admin/deleteUser(id=${user.id})}" role="button">Supprimer</a>
+                    <a class="disable-btn" th:href="@{/admin/disableUser(id=${user.id})}" role="button" type="submit">Désactiver</a>
                 </td>
             </tr>
             </tbody>
