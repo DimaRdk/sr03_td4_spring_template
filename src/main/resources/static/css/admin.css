@@ -119,6 +119,40 @@ nav li {
     background-color: #0056b3;
 }
 
+.delete-btn {
+    background-color: #ED2B2A;
+    color: #ffffff;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #D21312;
+}
+
+.disable-btn {
+    background-color: #9DC08B;
+    color: #ffffff;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.disable-btn:hover {
+    background-color: #609966;
+}
+
 
 
 .thead-dark th {

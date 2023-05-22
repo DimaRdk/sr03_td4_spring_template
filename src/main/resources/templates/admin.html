@@ -58,25 +58,31 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
+            <tr th:each="user : ${users.?[isActive == true]}">
                 <td th:text="${user?.firstName}">1</td>
                 <td th:text="${user?.lastName}">Doe</td>
                 <td th:text="${user?.mail}">John</td>
                 <td>
-                    <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a> |
-                    
+                    <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a>
+                    <a class="delete-btn" th:href="@{/admin/delete?id={id}(id=${user.id})}" role="button" th:background="red">Supprimer</a>
+                    <a class="disable-btn" th:href="@{/admin/disable?id={id}(id=${user.id})}" role="button">Désactiver</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#myTableId').DataTable({
                 "dom": "tp",
-                "ordering": false,
+                "ordering": true,
                 "pagingType": "simple",
-                "lengthMenu": [ 10 ]
+                "lengthMenu": [ 10 ],
+                'aoColumnDefs': [{ // Unable sorting on last column (Buttons)
+                    'bSortable': false,
+                    'aTargets': [-1]
+                }]
             });
         });
     </script>
