@@ -53,7 +53,7 @@ public class User {
     @Column(name = "admin")
     protected boolean admin;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "isactive", nullable = false)
     private boolean isActive;
 
     public User() {

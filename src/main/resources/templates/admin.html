@@ -63,13 +63,13 @@
                 <td th:text="${user?.lastName}">Doe</td>
                 <td th:text="${user?.mail}">John</td>
                 <td>
-                    <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a>
+                    <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a> |
+                    
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#myTableId').DataTable({
