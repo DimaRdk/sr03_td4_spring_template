@@ -20,8 +20,8 @@
                    th:field="*{password}"
                    th:class="'form-control' + ${invalid != null && invalid ? ' is-invalid' : ''}"
                    required>
-
         </div>
+
         <div th:if="${invalidLogin}" class="alert alert-danger">
             Identifiant incorrect. Veuillez réessayer.
         </div>
@@ -36,6 +36,9 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Connexion</button>
     </form>
+    <div class="mb-3 text-right">
+        <a href="#" th:href="@{/forgotPassword}">Mot de passe oublié ?</a>
+    </div>
 </div>
 </body>
 </html>

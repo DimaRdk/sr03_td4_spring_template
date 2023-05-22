@@ -158,3 +158,30 @@ nav li {
 .thead-dark th {
     font-weight: 600;
 }
+
+/* Alerte */
+.alert {
+    border-radius: 10px; /* Arrondit les coins de l'alerte */
+    color: #ffffff; /* Change la couleur du texte */
+    padding: 15px; /* Ajoute un peu plus d'espace à l'intérieur de l'alerte */
+    margin-bottom: 20px; /* Ajoute un espace en bas de l'alerte */
+    font-size: 18px; /* Change la taille du texte */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+}
+
+.alert-success {
+    background-color: #4CAF50; /* Vert pour le succès */
+}
+
+.alert-danger {
+    background-color: #f44336; /* Rouge pour une erreur */
+}
+.alert .close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: #000;  /* change the color as per your preference */
+}

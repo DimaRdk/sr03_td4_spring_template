@@ -86,6 +86,10 @@
             });
         });
     </script>
+    <div th:if="${message}" th:classappend="'alert ' + ${alertClass}" role="alert">
+        <p th:text="${message}"></p>
+
+    </div>
 
 </main>
 </body>

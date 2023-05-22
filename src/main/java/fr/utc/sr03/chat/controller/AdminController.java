@@ -80,28 +80,26 @@ public class AdminController {
     @PostMapping("createUser")
     public String createUser(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Erreur lors de la création d'un utilisateur");
-            return "createUser";
+            redirectAttributes.addFlashAttribute("message", "Erreur lors de la création d'un utilisateur");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/admin/createUser";
         }
-        System.out.println("Création de l'utilisateur réussie");
-
-        // Effectuer des vérifications supplémentaires avant d'ajouter l'user à la base de données
-        // TODO verif unicité mail
         User testUniq = userRepository.findByMail(user.getMail());
         if (testUniq != null){
-            System.out.println("Le mail selectionné n'est pas valide");
-            return "createUser";
+            redirectAttributes.addFlashAttribute("message", "Le mail sélectionné n'est pas valide");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/admin/createUser";
         }
         String password = generateRandomString();
 
         user.setPassword(password);
 
-        // Ajouter l'user à la base de données
-
-        // Envoyer un e-mail de confirmation avec le mot de passe temporaire
-        // TODO
         userRepository.save(user);
-   
+
+
+        redirectAttributes.addFlashAttribute("message", "Création de l'utilisateur réussie");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+
         return "redirect:/admin";
     }
 

@@ -60,5 +60,9 @@
   </div>
 
 </form>
+<div th:if="${message}" th:classappend="'alert ' + ${alertClass}" role="alert">
+  <p th:text="${message}"></p>
+
+</div>
 </body>
 </html>
