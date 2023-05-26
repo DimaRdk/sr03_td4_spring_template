@@ -15,6 +15,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     @Query("SELECT u FROM User u WHERE LENGTH(u.lastName) >= :lastNameLength")
     List<User> findByLastNameLength(@Param("lastNameLength") int lastNameLength);
     User findByMail(@Param("mail") String mail);
-
+    User findByPassword(@Param("password") String password);
 
 }

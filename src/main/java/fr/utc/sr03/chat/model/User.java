@@ -61,6 +61,16 @@ public class User {
         admin = false;
     }
 
+    public User(Long id, String firstName, String lastName,String mail , String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mail = mail;
+        this.password = password;
+        isActive = true;
+        admin = false;
+    }
+
     public User(String firstName, String lastName,String mail , String password) {
 
     this.firstName = firstName;
@@ -74,6 +84,10 @@ public class User {
 
     public long getId() {
         return id;
+    }
+
+    public long setId(Long newId) {
+        return this.id = newId;
     }
 
     public String getFirstName() {
