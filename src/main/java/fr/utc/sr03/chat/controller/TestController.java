@@ -58,7 +58,6 @@ public class TestController {
             LOGGER.info(admin.getFirstName() + " : " + admin.getAdmin());
         });
         User user = userRepository.findByMailAndPassword("jb@test.com", "jb");
-        chatRepository.save(new Chat("URL","Chat 1" , "Chat pour tester ", user));
 
         LOGGER.info("=== Chats dispo  ===");
         List<Chat> chats = chatRepository.findAll();

@@ -47,7 +47,8 @@ public class User {
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Chat> invitedChats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //TODO Cascade
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private List<Chat> createdChat = new ArrayList<>();
 
     @Column(name = "admin")
@@ -123,7 +124,10 @@ public class User {
     }
 
     public List<Chat> getInvitedChats() {
-        return invitedChats;
+        if (invitedChats.size()>0){
+            return invitedChats;
+        }
+        return null;
     }
 
     public void setInvitedChats(List<Chat> invitedChats) {
@@ -142,9 +146,6 @@ public class User {
     public void setAdmin(boolean admin){
         this.admin = admin;
     }
-    public List<Chat> getCreatedChat() {
-        return createdChat;
-    }
 
     public void setCreatedChat(List<Chat> createdChat) {
         this.createdChat = createdChat;
@@ -154,6 +155,13 @@ public class User {
         this.createdChat.add(newChat);
     }
 
+    public List<Chat> getCreatedChat(){
+        if (createdChat.size()>0){
+            return createdChat;
+        }
+        return null;
+    }
+
     public boolean getIsActive() {
         return isActive;
     }
@@ -161,27 +169,4 @@ public class User {
     public void setIsActive(boolean active) {
         isActive = active;
     }
-
-    //TODO : implémenter createChat()
-    public void createChat(){
-
-    }
-    //TODO : implémenter modifyChat()
-    public void modifyChat(){
-
-    }
-    //TODO : implémenter deleteChat()
-    public void deleteChat(){
-
-    }
-    //TODO : implémenter joinChat()
-    public void joinChat(){
-
-    }
-    //TODO : implémenter sendMessage()
-    public void sendMessage(){
-
-    }
-
-
 }

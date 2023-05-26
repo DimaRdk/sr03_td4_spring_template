@@ -26,7 +26,6 @@ public class Chat{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "title")
     private String title;
 
@@ -55,8 +54,7 @@ public class Chat{
 
     }
 
-    public Chat(String Url , String title , String description , User creator){
-
+    public Chat(String title , String description , User creator){
         this.title = title;
         this.description = description;
         this.creationDate = LocalTime.now();
@@ -68,8 +66,6 @@ public class Chat{
     public Long getId(){
         return this.id;
     }
-
-
 
     public void addMembers(User u){
         if(this.members!=null){

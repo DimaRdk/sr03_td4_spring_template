@@ -55,7 +55,7 @@
         <td th:text="${user?.lastName}">Doe</td>
         <td th:text="${user?.mail}">John</td>
         <td>
-          <a class="edit-btn" th:href="@{/admin/edit?id={id}(id=${user.id})}" role="button">Modifier</a>
+          <a class="edit-btn" th:href="@{/admin/editUser(id=${user.id})}" role="button">Modifier</a>
           <a class="delete-btn" th:href="@{/admin/deleteUser(id=${user.id})}" role="button">Supprimer</a>
           <a class="disable-btn" th:href="@{/admin/enableUser(id=${user.id})}" role="button" type="submit">Activer</a>
         </td>
