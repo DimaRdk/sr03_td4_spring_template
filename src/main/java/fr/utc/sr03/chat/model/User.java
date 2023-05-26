@@ -47,8 +47,7 @@ public class User {
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Chat> invitedChats = new ArrayList<>();
 
-    //TODO Cascade
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Chat> createdChat = new ArrayList<>();
 
     @Column(name = "admin")
