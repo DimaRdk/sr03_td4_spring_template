@@ -25,6 +25,11 @@ public class TestController {
     @Autowired
     private ChatRepository chatRepository;
 
+    @GetMapping("sample")
+    public String getSample(){
+        return "../test/sample_client";
+    }
+
     @GetMapping("/test")
     @ResponseBody // Pour faire sans template html
     public String test() {
