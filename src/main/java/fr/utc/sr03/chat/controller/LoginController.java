@@ -48,10 +48,7 @@ public class LoginController {
                 return "login";
             }
 
-            if (userAttempted.getPassword().length() < 8) {
-                model.addAttribute("shortPassword", true);
-                return "login";
-            }
+            
 
             if (userAttempted.getPassword().equals(user.getPassword())) {
                 if (userAttempted.getAdmin()) {

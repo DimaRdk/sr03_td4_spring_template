@@ -6,6 +6,7 @@
     text-align:center;
     color: var(--nav-bg-color);
     margin-bottom: 1rem;
+    padding: 15px;
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -218,6 +219,7 @@ body {
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
+    margin-top: 10px;
 }
 
 .user-form {
