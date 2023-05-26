@@ -7,10 +7,7 @@ import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +16,7 @@ import javax.servlet.http.HttpSession;
  * URL de base du endpoint : http://localhost:8080/login
  */
 @Controller
+
 @RequestMapping("login")
 public class LoginController {
     @Autowired
@@ -29,8 +27,10 @@ public class LoginController {
         model.addAttribute("user", new User());
         return "login";
     }
-
-
+    @GetMapping("/forgotPassword")
+    public String showForgotPasswordPage() {
+        return "forgotPassword";
+    }
     private static final int MAX_ATTEMPTS = 5;
 
     @PostMapping
