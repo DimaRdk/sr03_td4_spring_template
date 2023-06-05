@@ -50,6 +50,7 @@ const ChatList = (props) => {
                         <tr>
                             <th>Titre</th>
                             <th>Description</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -64,6 +65,7 @@ const ChatList = (props) => {
                         <tr>
                             <th>Titre</th>
                             <th>Description</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>

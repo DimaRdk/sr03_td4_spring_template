@@ -1,42 +1,49 @@
+/* ChatList.css */
 .content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 2em;
-    padding: 2em;
-    background-color: #f2f2f2;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-h2 {
+.content > aside {
+    min-width: 200px;
+    max-width: 250px;
+    margin-right: 20px;
+    border-right: 1px solid #e0e0e0;
+    padding-right: 20px;
+}
+
+.content > main {
+    flex-grow: 1;
+}
+
+.content > main > h2 {
     color: #333;
-    font-size: 1.5em;
-    margin-bottom: 1em;
+    margin-bottom: 10px;
 }
 
-.table {
+.content > main .table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 2em;
 }
 
-.table th,
-.table td {
-    border: 1px solid #ddd;
-    padding: 1em;
+.content > main .table thead {
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.content > main .table th,
+.content > main .table td {
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
     text-align: left;
 }
 
-.table th {
-    background-color: #4CAF50;
-    color: white;
+.content > main .table th {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
-.table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.table tr:hover {
-    background-color: #ddd;
+.content > main .table tbody tr:last-child th,
+.content > main .table tbody tr:last-child td {
+    border-bottom: none;
 }
