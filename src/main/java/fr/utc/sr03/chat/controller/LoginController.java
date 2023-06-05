@@ -48,7 +48,7 @@ public class LoginController {
                 return "login";
             }
 
-            
+
 
             if (userAttempted.getPassword().equals(user.getPassword())) {
                 if (userAttempted.getAdmin()) {
