@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
 import './styles/Login.css'
 const Login = (props) => {
     const [mail, setMail] = useState('')
@@ -7,24 +8,15 @@ const Login = (props) => {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        fetch("http://localhost:8080/api/login", {
-            method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:{
+        axios.post("http://localhost:8080/api/login", {
                 'mail' : mail,
                 'password' : password
-            }
-        })
+            })
             .then(
                 (res) => {
-                    if (!res.ok){
-                        throw new Error();
-                    }
-                    return res.json()
-                }).then((data) => console.log(data))
+                    // TODO : redirection
+                    return res.data
+                })
             .catch();
     }
 
