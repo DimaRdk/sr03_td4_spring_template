@@ -1,6 +1,7 @@
 package fr.utc.sr03.chat.controller;
 
 import fr.utc.sr03.chat.dao.UserRepository;
+import fr.utc.sr03.chat.exceptions.UserNotFoundException;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,33 +41,42 @@ public class AdminController {
     }
 
     @GetMapping("disableUser")
-    public String disableUser(@RequestParam Long id) {
+    public String disableUser(@RequestParam Long id) throws UserNotFoundException {
         Optional<User> toDisable = userRepository.findById(id);
         if (toDisable.isPresent()){
             User user = toDisable.get();
             user.setIsActive(false);
             userRepository.save(user);
         }
+        else{
+            throw new UserNotFoundException();
+        }
         return "redirect:/admin";
     }
 
     @GetMapping("enableUser")
-    public String enableUser(@RequestParam Long id) {
+    public String enableUser(@RequestParam Long id) throws UserNotFoundException {
         Optional<User> toEnable = userRepository.findById(id);
         if (toEnable.isPresent()){
             User user = toEnable.get();
             user.setIsActive(true);
             userRepository.save(user);
         }
+        else{
+            throw new UserNotFoundException();
+        }
         return "redirect:/admin/disabledUsers";
     }
 
     @GetMapping("deleteUser")
-    public String deleteUser(@RequestParam Long id) {
+    public String deleteUser(@RequestParam Long id) throws UserNotFoundException {
         Optional<User> toDelete = userRepository.findById(id);
         if (toDelete.isPresent()){
             User user = toDelete.get();
             userRepository.delete(user);
+        }
+        else{
+            throw new UserNotFoundException();
         }
         return "redirect:/admin";
     }
@@ -125,19 +135,20 @@ public class AdminController {
     }
 
     @GetMapping("editUser")
-    public String getEditForm(@RequestParam Long id, Model model) {
+    public String getEditForm(@RequestParam Long id, Model model) throws UserNotFoundException {
         Optional<User> toEdit = userRepository.findById(id);
         if (toEdit.isPresent()){
             User user = toEdit.get();
             model.addAttribute("user", user);
             return "editUser";
         }
-        System.out.println("Erreur lors de la récupération de l'utilisateur "+id+" à modifier");
-        return "redirect:/admin";
+        else{
+            throw new UserNotFoundException();
+        }
     }
 
     @PostMapping("editUser")
-    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) throws UserNotFoundException {
         if (bindingResult.hasErrors()) {
             System.out.println("Erreur lors de la modification d'un utilisateur");
             return "redirect:/admin";
@@ -147,8 +158,7 @@ public class AdminController {
         if (toUpdate.isPresent()){
             toSave = toUpdate.get();
         }else{
-            System.out.println("Erreur lors de la récupération de l'utilisateur d'id :"+user.getId()+" lors de sa modification");
-            return "redirect:/admin";
+            throw new UserNotFoundException();
         }
         // Passage des nouvelles valeurs
         toSave.setFirstName(user.getFirstName());

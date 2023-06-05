@@ -5,12 +5,27 @@ const Login = (props) => {
     const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
-        console.log("mail = " + mail)
-        console.log("password = " + password)
-        //TODO Requete http login au backend spring
-        // axios.post...
+        fetch("http://localhost:8080/api/login", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:{
+                'mail' : mail,
+                'password' : password
+            }
+        })
+            .then(
+                (res) => {
+                    if (!res.ok){
+                        throw new Error();
+                    }
+                    return res.json()
+                }).then((data) => console.log(data))
+            .catch();
     }
 
     return (
