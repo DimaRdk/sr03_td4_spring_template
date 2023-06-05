@@ -1,53 +1,50 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import './styles/ChatList.css'
+
+import NavBar from './NavBar';
+import Chat from './Chat';
+import UserInfo from "./UserInfo";
 
 const ChatList = (props) => {
-    const [chats, setChats] = useState([])
+    const [myChats, setMyChats] = useState([]);
+    const [invitedChats, setInvitedChats] = useState([]);
 
-    // => "onload"
     useEffect(() => {
-        //TODO Recuperer la liste des chats du user depuis le backend spring
-        // axios.get...
-        setChats([
+        // Remplacer ces deux appels par des appels à votre backend pour obtenir les chats
+        setMyChats([
             {
                 'id': 1,
-                'title': 'chat 1',
+                'title': 'My chat 1',
                 'description' : 'le 1er chat'
             },
             {
                 'id': 2,
-                'title': 'chat 2',
+                'title': 'My chat 2',
                 'description' : 'le 2e chat'
             }
-        ])
+        ]);
+
+        setInvitedChats([
+            {
+                'id': 3,
+                'title': 'Invited chat 1',
+                'description' : 'le 3e chat'
+            },
+            {
+                'id': 4,
+                'title': 'Invited chat 2',
+                'description' : 'le 4e chat'
+            }
+        ]);
     }, [])
 
     return (
         <div>
-            <nav className="navbar navbar-expand-lg">
-                <div className="container-fluid">
-                    <Link className={'navbar-brand'} to="/chats">Accueil</Link>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className={'nav-link'} to="/chats">Planifier une discussion</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={'nav-link'} to="/chats">Mes salons de discussion</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className={'nav-link'} to="/chats">Mes invitations</Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <NavBar />
             <div className="content">
-                <aside>
-                    <div>Bob</div>
-                    <div>Admin</div>
-                </aside>
+                <UserInfo username="Bob" role="Admin" />
                 <main>
+                    <h2>Mes Chats</h2>
                     <table className="table">
                         <thead>
                         <tr>
@@ -56,11 +53,22 @@ const ChatList = (props) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {chats && chats.map((chat) => (
-                            <tr key={chat.id}>
-                                <td>{chat.title}</td>
-                                <td>{chat.description}</td>
-                            </tr>
+                        {myChats && myChats.map((chat) => (
+                            <Chat chat={chat}/>
+                        ))}
+                        </tbody>
+                    </table>
+                    <h2>Chats Invités</h2>
+                    <table className="table">
+                        <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {invitedChats && invitedChats.map((chat) => (
+                            <Chat chat={chat}/>
                         ))}
                         </tbody>
                     </table>

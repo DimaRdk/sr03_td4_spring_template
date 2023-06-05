@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './chat.css';
+
 import App from './App';
+import ChatCreation from "./components/ChatCreation";
 import reportWebVitals from './reportWebVitals';
 import {
     BrowserRouter,
@@ -14,6 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <Routes>
+            <Route path="/chatCreation" element={<ChatCreation />} />
             <Route path="/" element={<App />} />
             <Route path="/chats" element={<ChatList />} />
         </Routes>

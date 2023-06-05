@@ -1,0 +1,19 @@
+/* UserInfo.css */
+.user-info {
+    background-color: #f7f7f7;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.1);
+}
+
+.user-info h2 {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.user-name, .user-role {
+    font-size: 1em;
+    color: #555;
+}
