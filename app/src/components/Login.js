@@ -1,12 +1,20 @@
 import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import './styles/Login.css'
+
+
 const Login = (props) => {
     const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate();
+    let attemptedUser;
 
     const handleLogin = async (event) => {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userFirstName");
+        localStorage.removeItem("userLastName");
+        localStorage.removeItem("userRole");
         event.preventDefault();
         axios.post("http://localhost:8080/api/login", {
                 'mail' : mail,
@@ -14,10 +22,16 @@ const Login = (props) => {
             })
             .then(
                 (res) => {
-                    // TODO : redirection
-                    return res.data
+                    console.log(res);
+                    attemptedUser = res.data;
+                    navigate("/chats");
+                    localStorage.setItem("userId", attemptedUser.id);
+                    localStorage.setItem("userFirstName", attemptedUser.firstName);
+                    localStorage.setItem("userLastName", attemptedUser.lastName);
+                    localStorage.setItem("userRole", attemptedUser.admin);
                 })
             .catch();
+        // TODO faire le mécanisme lorsque mauvaise connexion
     }
 
     return (
@@ -39,7 +53,6 @@ const Login = (props) => {
                     <div className="invalid-feedback">Login ou mot de passe incorrect</div>
                 </div>
                 <button type="submit" className="btn btn-primary w-100" onClick={handleLogin}>Connexion</button>
-                <Link to="/chats">POUR TEST UNIQUEMENT</Link>
             </form>
         </div>
     );

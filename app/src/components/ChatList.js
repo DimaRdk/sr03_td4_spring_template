@@ -1,48 +1,44 @@
 import React, {useEffect, useState} from "react";
+import {useLocation} from 'react-router-dom';
 import './styles/ChatList.css'
 
 import NavBar from './NavBar';
 import Chat from './Chat';
 import UserInfo from "./UserInfo";
+import axios from "axios";
 
-const ChatList = (props) => {
+const ChatList = () => {
     const [myChats, setMyChats] = useState([]);
     const [invitedChats, setInvitedChats] = useState([]);
+    let loggedUser = localStorage.getItem("user");
+    console.log(loggedUser);
 
-    useEffect(() => {
-        // Remplacer ces deux appels par des appels à votre backend pour obtenir les chats
-        setMyChats([
-            {
-                'id': 1,
-                'title': 'My chat 1',
-                'description' : 'le 1er chat'
-            },
-            {
-                'id': 2,
-                'title': 'My chat 2',
-                'description' : 'le 2e chat'
-            }
-        ]);
+    useEffect( () => {
+        let createdChats
+        let invitedChats
+        async function fetchData(){
+            createdChats = axios.get("http://localhost:8080/api/createdChat/?id="+loggedUser.id)
+                .then(r => {
+                    return r.data;
+                })
+                .catch();
 
-        setInvitedChats([
-            {
-                'id': 3,
-                'title': 'Invited chat 1',
-                'description' : 'le 3e chat'
-            },
-            {
-                'id': 4,
-                'title': 'Invited chat 2',
-                'description' : 'le 4e chat'
-            }
-        ]);
+            invitedChats = axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUser.id)
+                .then(r => {
+                    return r.data;
+                })
+                .catch();
+        }
+
+        setMyChats(createdChats);
+        setInvitedChats(invitedChats);
     }, [])
 
     return (
         <div>
-            <NavBar />
+            <NavBar loggedUser={loggedUser}/>
             <div className="content">
-                <UserInfo username="Bob" role="Admin" />
+                <UserInfo firstname={loggedUser.firstName} lastname={loggedUser.lastName} role={loggedUser.admin} />
                 <main>
                     <h2>Mes Chats</h2>
                     <table className="table">

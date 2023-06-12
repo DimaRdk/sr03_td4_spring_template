@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import {useLocation} from "react-router-dom";
 import './styles/PlanifierDiscussion.css'
 import NavBar from "./NavBar";
+import axios from "axios";
 const PlanifierDiscussion = () => {
+    let creatorId = localStorage.getItem("userId");
     const [chat, setChat] = useState({
         id: '',
         titre: '',
@@ -20,6 +23,19 @@ const PlanifierDiscussion = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(chat);
+        axios.post("http://localhost:8080/api/chat",{
+            'title': chat.titre,
+            'description': chat.description,
+            'creationDate': chat.creationDate,
+            'expirationDate': chat.expirationDate,
+            'creator': creatorId
+        })
+            .then( r => {
+                    console.log(r)
+                }
+            )
+            .catch();
+
     };
 
     return (

@@ -30,7 +30,7 @@ public class EndpointApiJson {
 
     @GetMapping("userDetails")
     @ResponseBody // Pour faire sans template html
-    public User getUserDetails(@RequestBody Long id) throws UserNotFoundException {
+    public User getUserDetails(@RequestParam Long id) throws UserNotFoundException {
         Optional<User> requestedUser= userRepository.findById(id);
         if (requestedUser.isPresent()){
             User response = requestedUser.get();
@@ -43,15 +43,15 @@ public class EndpointApiJson {
 
     @GetMapping("createdChat")
     @ResponseBody // Pour faire sans template html
-    public List<Chat> getUsersChat(@RequestBody Long id)
+    public List<Chat> getUsersChat(@RequestParam Long id)
     {
-        List<Chat> requestedChats= chatRepository.findByCreator_Id(id);
+        List<Chat> requestedChats = chatRepository.findByCreator_Id(id);
         return requestedChats;
     }
 
     @GetMapping("invitedChat")
     @ResponseBody
-    public List<Chat> getUsersInvitation(@RequestBody Long id)
+    public List<Chat> getUsersInvitation(@RequestParam Long id)
     {
         List<Chat> requestedChats= chatRepository.findByMembers_Id(id);
         return requestedChats;
@@ -59,7 +59,7 @@ public class EndpointApiJson {
 
     @DeleteMapping("chat")
     @ResponseBody
-    public void deleteChat(@RequestBody Long id) throws ChatNotFoundException {
+    public void deleteChat(@RequestParam Long id) throws ChatNotFoundException {
         Optional<Chat> requestedChat = chatRepository.findById(id);
         if (requestedChat.isPresent()){
             Chat toDelete = requestedChat.get();
@@ -72,8 +72,11 @@ public class EndpointApiJson {
 
     @PostMapping("chat")
     @ResponseBody
-    public void addNewChat(@RequestBody Chat toCreate){
-        //TODO verifier que le chat est OK + confirmation
+    public void addNewChat(@RequestBody Chat toCreate) throws UserNotFoundException {
+        System.out.println(toCreate);
+        if (toCreate.getCreator() == null){
+            throw new UserNotFoundException();
+        }
         chatRepository.save(toCreate);
     }
 

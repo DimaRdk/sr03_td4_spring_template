@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import './styles/NavBar.css';
 
 const NavBar = () => {
@@ -7,15 +7,11 @@ const NavBar = () => {
         <nav className="navbar">
             <ul className="navbar-nav">
                 <li>
-                    <Link to="/chats" className="nav-link">Accueil</Link>
+                    <NavLink to="/chats" className="nav-link" activeClassName="is-active">Accueil</NavLink>
                 </li>
                 <li>
-                    <Link to="/ChatCreation" className="nav-link">Planifier une discussion</Link>
+                    <NavLink to="/ChatCreation" className="nav-link" activeClassName="is-active">Planifier une discussion</NavLink>
                 </li>
-                <li>
-                    <Link to="/chats" className="nav-link">Mes salons de discussion</Link>
-                </li>
-
             </ul>
         </nav>
     );

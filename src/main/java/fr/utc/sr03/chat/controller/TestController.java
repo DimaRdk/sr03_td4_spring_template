@@ -68,7 +68,7 @@ public class TestController {
         List<Chat> chats = chatRepository.findAll();
 
         chats.forEach(chat -> {
-            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator().getFirstName());
+            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator());
         });
 
 
@@ -76,7 +76,7 @@ public class TestController {
 
         List<Chat> chatU = chatRepository.findByCreator_Id(user.getId());
         chatU.forEach(chat -> {
-            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator().getFirstName());
+            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator());
         });
 
 
@@ -88,7 +88,7 @@ public class TestController {
         LOGGER.info(user2.getFirstName());
         List<Chat> chatM = chatRepository.findByMembers_Id(user2.getId());
         chatU.forEach(chat -> {
-            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator().getFirstName());
+            LOGGER.info(" Nom du chat :"+chat.getTitle() + " | Description : " + chat.getDescription()+"| Createur : "+ chat.getCreator());
         });
 
         LOGGER.info("=== INSERT ===");
