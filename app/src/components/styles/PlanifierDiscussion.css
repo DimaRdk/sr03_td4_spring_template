@@ -37,3 +37,26 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Notifications */
+
+.notification {
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    width: 80%;
+    border-radius: 5px; /* arrondir les coins de la boîte de notification */
+    background-color: #4caf50; /* couleur d'arrière-plan de la notification */
+    color: white; /* couleur du texte de la notification */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* ajoute une ombre à la boîte de notification pour un effet 3D */
+    transition: opacity 1s; /* animation pour faire disparaître la notification */
+    opacity: 1;
+}
+
+.notification.fadeOut {
+    opacity: 0;
+}
+
+
+
+

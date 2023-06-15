@@ -10,25 +10,29 @@ import axios from "axios";
 const ChatList = () => {
     const [myChats, setMyChats] = useState([]);
     const [invitedChats, setInvitedChats] = useState([]);
-    let loggedUser = localStorage.getItem("user");
+    let loggedUser = JSON.parse(localStorage.getItem("user"));
     console.log(loggedUser);
 
     useEffect( () => {
         let createdChats
         let invitedChats
         async function fetchData(){
-            createdChats = axios.get("http://localhost:8080/api/createdChat/?id="+loggedUser.id)
+            createdChats = await axios.get("http://localhost:8080/api/createdChat/?id="+loggedUser.id)
                 .then(r => {
                     return r.data;
                 })
                 .catch();
 
-            invitedChats = axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUser.id)
+            invitedChats = await axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUser.id)
                 .then(r => {
                     return r.data;
                 })
                 .catch();
+
+            setMyChats(createdChats);
+            setInvitedChats(invitedChats);
         }
+
 
         setMyChats(createdChats);
         setInvitedChats(invitedChats);
@@ -38,7 +42,8 @@ const ChatList = () => {
         <div>
             <NavBar loggedUser={loggedUser}/>
             <div className="content">
-                <UserInfo firstname={loggedUser.firstName} lastname={loggedUser.lastName} role={loggedUser.admin} />
+                <UserInfo firstname={loggedUser && loggedUser.firstName} lastname={loggedUser && loggedUser.lastName} role={loggedUser && loggedUser.admin} />
+
                 <main>
                     <h2>Mes Chats</h2>
                     <table className="table">

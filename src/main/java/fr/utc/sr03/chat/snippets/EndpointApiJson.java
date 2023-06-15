@@ -61,6 +61,7 @@ public class EndpointApiJson {
     @ResponseBody
     public void deleteChat(@RequestParam Long id) throws ChatNotFoundException {
         Optional<Chat> requestedChat = chatRepository.findById(id);
+        System.out.println("on arrive ici");
         if (requestedChat.isPresent()){
             Chat toDelete = requestedChat.get();
             chatRepository.delete(toDelete);
@@ -72,11 +73,10 @@ public class EndpointApiJson {
 
     @PostMapping("chat")
     @ResponseBody
-    public void addNewChat(@RequestBody Chat toCreate) throws UserNotFoundException {
-        System.out.println(toCreate);
-        if (toCreate.getCreator() == null){
-            throw new UserNotFoundException();
-        }
+    public void addNewChat(@RequestBody Chat toCreate, @RequestParam Long creatorId) throws UserNotFoundException {
+        User creator = userRepository.findById(creatorId)
+                .orElseThrow(() -> new UserNotFoundException());
+        toCreate.setCreator(creator);
         chatRepository.save(toCreate);
     }
 

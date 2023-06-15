@@ -33,15 +33,17 @@ public class Chat{
     private String description;
 
     @Column(name = "creation_date")
-    private LocalTime creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = "expiration_date")
-    private LocalTime expirationDate;
+    private LocalDateTime expirationDate;
 
-    //TODO fix fetch
-    //@ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "creator_id")
-    private Long creator;
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator;
+
+
+
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -55,7 +57,7 @@ public class Chat{
 
     }
 
-    public Chat(String title , String description , Long creator, LocalTime creationDate, LocalTime expirationDate){
+    public Chat(String title , String description , User creator, LocalDateTime creationDate, LocalDateTime expirationDate){
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
@@ -67,6 +69,16 @@ public class Chat{
         return this.id;
     }
 
+//    public Long getCreatorId() {
+//        return creatorId;
+//    }
+//
+//    public void setCreatorId(Long creatorId) {
+//        this.creatorId = creatorId;
+//    }
+
+
+
     public void addMembers(User u){
         if(this.members!=null){
             this.members.add(u);
@@ -77,18 +89,18 @@ public class Chat{
         }
 
     }
-    public LocalTime getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public LocalTime getExpirationDate() {
+    public LocalDateTime getExpirationDate() {
         return expirationDate;
     }
 
-    public Long getCreator() {
+    public User getCreator() {
         return creator;
     }
-    public void setCreator(Long creatorId){this.creator = creatorId;}
+    public void setCreator(User creator){this.creator = creator;}
 
     public List<User> getMembers() {
         return members;
