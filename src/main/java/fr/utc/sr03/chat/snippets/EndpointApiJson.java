@@ -1,5 +1,6 @@
 package fr.utc.sr03.chat.snippets;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import fr.utc.sr03.chat.dao.ChatRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.exceptions.ChatNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Constraint;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -87,16 +89,20 @@ public class EndpointApiJson {
         chatRepository.save(toUpdate);
     }
 
+
     @PostMapping("login")
     @ResponseBody
     public User canLog(@RequestBody User requestedUser) throws UserNotFoundException {
         Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(requestedUser.getMail()));
-        if (fetchedUser.isPresent()){
+        if (fetchedUser.isPresent()) {
             User user = fetchedUser.get();
-            if(user.getPassword().equals(requestedUser.getPassword())){
+            if (user.getPassword().equals(requestedUser.getPassword())) {
                 return user;
+            } else {
+                throw new UserNotFoundException();
             }
+        } else {
+            throw  new UserNotFoundException();
         }
-        throw new UserNotFoundException();
     }
 }

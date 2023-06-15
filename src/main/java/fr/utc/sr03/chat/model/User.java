@@ -1,5 +1,6 @@
 package fr.utc.sr03.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -47,8 +48,9 @@ public class User {
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     private List<Chat> invitedChats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Chat> createdChat = new ArrayList<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    private List<Chat> createdChat;
 
     @Column(name = "admin")
     protected boolean admin;

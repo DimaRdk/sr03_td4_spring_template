@@ -11,6 +11,7 @@ const Login = (props) => {
     let attemptedUser;
 
     const handleLogin = async (event) => {
+        console.log('laala')
         localStorage.removeItem("userId");
         localStorage.removeItem("userFirstName");
         localStorage.removeItem("userLastName");
@@ -21,14 +22,17 @@ const Login = (props) => {
                 'password' : password
             })
             .then(
+
                 (res) => {
+                    console.log('on est la ')
                     console.log(res);
                     attemptedUser = res.data;
-                    navigate("/chats");
+
                     localStorage.setItem("userId", attemptedUser.id);
                     localStorage.setItem("userFirstName", attemptedUser.firstName);
                     localStorage.setItem("userLastName", attemptedUser.lastName);
                     localStorage.setItem("userRole", attemptedUser.admin);
+                    navigate("/chats");
                 })
             .catch();
         // TODO faire le mécanisme lorsque mauvaise connexion

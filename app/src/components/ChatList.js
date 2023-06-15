@@ -6,43 +6,53 @@ import NavBar from './NavBar';
 import Chat from './Chat';
 import UserInfo from "./UserInfo";
 import axios from "axios";
-
+let createdChats;
+let invitedChats;
 const ChatList = () => {
     const [myChats, setMyChats] = useState([]);
     const [invitedChats, setInvitedChats] = useState([]);
-    let loggedUser = JSON.parse(localStorage.getItem("user"));
-    console.log(loggedUser);
+    let loggedUserID = localStorage.getItem("userId");
+    let loggedUserFirstName = localStorage.getItem("userFirstName");
+    let loggedUserLastName = localStorage.getItem("userLastName");
+    let loggedUserRole = localStorage.getItem("userRole");
 
-    useEffect( () => {
-        let createdChats
-        let invitedChats
-        async function fetchData(){
-            createdChats = await axios.get("http://localhost:8080/api/createdChat/?id="+loggedUser.id)
-                .then(r => {
-                    return r.data;
-                })
-                .catch();
 
-            invitedChats = await axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUser.id)
-                .then(r => {
-                    return r.data;
-                })
-                .catch();
+    useEffect(() => {
+        async function fetchData() {
 
-            setMyChats(createdChats);
-            setInvitedChats(invitedChats);
+            let fetchedCreatedChats;
+            let fetchedInvitedChats;
+
+            try {
+
+                const createdChatsResponse = await axios.get("http://localhost:8080/api/createdChat/?id=" + loggedUserID);
+                fetchedCreatedChats = createdChatsResponse.data;
+            } catch (error) {
+                console.error("Error fetching created chats:", error);
+            }
+
+            try {
+                const invitedChatsResponse = await axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUserID);
+                fetchedInvitedChats = invitedChatsResponse.data;
+            } catch (error) {
+                console.error("Error fetching invited chats:", error);
+            }
+
+            console.log(fetchedCreatedChats);
+            console.log(fetchedInvitedChats);
+
+            setMyChats(fetchedCreatedChats);
+            setInvitedChats(fetchedInvitedChats);
         }
 
-
-        setMyChats(createdChats);
-        setInvitedChats(invitedChats);
-    }, [])
+        fetchData();
+    }, []);
 
     return (
         <div>
-            <NavBar loggedUser={loggedUser}/>
+            <NavBar />
             <div className="content">
-                <UserInfo firstname={loggedUser && loggedUser.firstName} lastname={loggedUser && loggedUser.lastName} role={loggedUser && loggedUser.admin} />
+                <UserInfo firstname={ loggedUserFirstName} lastname={loggedUserLastName} role={loggedUserRole} />
 
                 <main>
                     <h2>Mes Chats</h2>

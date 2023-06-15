@@ -1,5 +1,7 @@
 package fr.utc.sr03.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,9 +40,12 @@ public class Chat{
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
+
+
 
 
 
