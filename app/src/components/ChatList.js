@@ -16,7 +16,25 @@ const ChatList = () => {
     let loggedUserLastName = localStorage.getItem("userLastName");
     let loggedUserRole = localStorage.getItem("userRole");
 
+    const joinChat = async (chatId) => {
+        // Logique pour rejoindre un chat avec l'ID spécifié
+        console.log(`Rejoindre le chat ${chatId}`);
+    };
+    const editChat = async (chatId) => {
+        // Logique pour rejoindre un chat avec l'ID spécifié
+        console.log(`Edit le chat ${chatId}`);
+    };
 
+    const deleteChat = async (chatId) => {
+        try {
+            await axios.delete(`http://localhost:8080/api/chats/${chatId}`);
+
+            const updatedChats = myChats.filter((chat) => chat.id !== chatId);
+            setMyChats(updatedChats);
+        } catch (error) {
+            console.error("Erreur lors de la suppression du chat :", error);
+        }
+    };
     useEffect(() => {
         async function fetchData() {
 
@@ -65,9 +83,10 @@ const ChatList = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {myChats && myChats.map((chat) => (
-                            <Chat chat={chat}/>
-                        ))}
+                        {myChats &&
+                            myChats.map((chat) => (
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat()} />
+                            ))}
                         </tbody>
                     </table>
                     <h2>Chats Invités</h2>
@@ -80,9 +99,10 @@ const ChatList = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {invitedChats && invitedChats.map((chat) => (
-                            <Chat chat={chat}/>
-                        ))}
+                        {invitedChats &&
+                            invitedChats.map((chat) => (
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat()}/>
+                            ))}
                         </tbody>
                     </table>
                 </main>

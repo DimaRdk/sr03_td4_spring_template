@@ -8,6 +8,7 @@ import fr.utc.sr03.chat.exceptions.UserNotFoundException;
 import fr.utc.sr03.chat.model.Chat;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,14 +62,14 @@ public class EndpointApiJson {
 
     @DeleteMapping("chat")
     @ResponseBody
-    public void deleteChat(@RequestParam Long id) throws ChatNotFoundException {
+    public ResponseEntity<String> deleteChat(@RequestParam Long id) throws ChatNotFoundException {
         Optional<Chat> requestedChat = chatRepository.findById(id);
         System.out.println("on arrive ici");
-        if (requestedChat.isPresent()){
+        if (requestedChat.isPresent()) {
             Chat toDelete = requestedChat.get();
             chatRepository.delete(toDelete);
-        }
-        else{
+            return ResponseEntity.noContent().build();
+        } else {
             throw new ChatNotFoundException();
         }
     }

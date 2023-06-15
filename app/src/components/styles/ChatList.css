@@ -47,3 +47,17 @@
 .content > main .table tbody tr:last-child td {
     border-bottom: none;
 }
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.delete-button {
+    color: white;
+    background-color: red;
+}
+.edit-btn {
+    color: white;
+    background-color: green;
+}
