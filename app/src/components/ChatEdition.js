@@ -4,6 +4,11 @@ import './styles/ChatEdition.css';
 import NavBar from "./NavBar";
 import axios from "axios";
 import Banierre from "./Banierre";
+
+import { useNavigate } from 'react-router-dom';
+
+
+
 const ChatEdition = () => {
     const { chatId } = useParams();
     const [chat, setChat] = useState(null);
@@ -12,10 +17,14 @@ const ChatEdition = () => {
     const [users, setUsers] = useState([]);
     const [chatUsers, setChatUsers] = useState([]);
     let currentUser = localStorage.getItem("userId");
-
+    const navigate = useNavigate();
 
 
     useEffect(() => {
+        if (!currentUser) {
+            navigate('/');
+        }
+
         axios.get(`http://localhost:8080/api/chat/${chatId}/members`)
             .then(response => {
                 setChatUsers(response.data);

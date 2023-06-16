@@ -39,7 +39,13 @@ const ChatList = () => {
         }
     };
     useEffect(() => {
-        async function fetchData() {
+
+            if (!loggedUserID) {
+                navigate('/');
+                    }
+
+
+    async function fetchData() {
 
             let fetchedCreatedChats;
             let fetchedInvitedChats;

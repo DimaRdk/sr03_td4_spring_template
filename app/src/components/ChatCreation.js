@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {useLocation} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import './styles/PlanifierDiscussion.css'
 import NavBar from "./NavBar";
 import axios from "axios";
@@ -8,6 +8,8 @@ const PlanifierDiscussion = () => {
     let creatorId = localStorage.getItem("userId");
     const [notification, setNotification] = useState('');
     const now = new Date().toISOString().slice(0,16);
+    const navigate= useNavigate();
+
 
     const initialChatState = {
         id: '',
@@ -19,7 +21,11 @@ const PlanifierDiscussion = () => {
 
     const [chat, setChat] = useState(initialChatState);
 
-
+    useEffect(() => {
+        if (!creatorId) {
+            navigate('/');
+        }
+    }, []);
 
     const handleChange = (e) => {
         setChat({
