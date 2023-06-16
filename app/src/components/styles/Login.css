@@ -32,6 +32,7 @@
 
 .btn {
     margin-top: 20px;
+    margin-right: 30px;
     padding: 10px;
     background-color: royalblue; /* couleur or pour contraster avec le fond bleu */
     border: none;

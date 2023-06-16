@@ -46,6 +46,20 @@ public class EndpointApiJson {
             throw new UserNotFoundException();
         }
     }
+
+    @GetMapping("forgotPassword")
+    @ResponseBody // Pour faire sans template html
+    public String getPasswordMail(@RequestParam String email) throws UserNotFoundException {
+        User requestedUser= userRepository.findByMail(email);
+        if (requestedUser != null ){
+            String response = requestedUser.getPassword();
+            return response;
+        }
+        else{
+            throw new UserNotFoundException();
+        }
+    }
+
     @GetMapping("login")
     @ResponseBody
     public User canLog(@RequestParam String mail, @RequestParam String password) throws UserNotFoundException {

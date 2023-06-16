@@ -11,11 +11,13 @@ import {
     Route,
 } from "react-router-dom";
 import ChatList from "./components/ChatList";
+import ForgotPassword from "./components/ForgotPassword";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <Routes>
+            <Route path ="/forgotPassword" element={<ForgotPassword />} />
             <Route path="/chatCreation" element={<ChatCreation />} />
             <Route path="/chatEdition/:chatId" element={<ChatEdition />} />
             <Route path="/" element={<App />} />

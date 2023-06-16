@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import './styles/Login.css'
 import Banierre from "./Banierre";
@@ -81,6 +81,8 @@ const Login = (props) => {
                     <div className="invalid-feedback">Login ou mot de passe incorrect</div>
                 </div>
                 <button type="submit" className="btn btn-primary w-100" onClick={handleLogin}>Connexion</button>
+
+                <Link to="/forgotPassword" className="btn btn-link">Mot de passe oublié ?</Link>
             </form>
         </div>
     );
