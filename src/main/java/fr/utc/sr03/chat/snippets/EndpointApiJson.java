@@ -78,10 +78,11 @@ public class EndpointApiJson {
         return requestedChats;
     }
 
-    @DeleteMapping("chat")
+    @PostMapping("Suprchat")
     @ResponseBody
-    public ResponseEntity<String> deleteChat(@RequestParam Long id) throws ChatNotFoundException {
-        Optional<Chat> requestedChat = chatRepository.findById(id);
+    public ResponseEntity<String> deleteChat(@RequestParam String id) throws ChatNotFoundException {
+        Long idTyped = Long.parseLong(id);
+        Optional<Chat> requestedChat = chatRepository.findById(idTyped);
         System.out.println("on arrive ici");
         if (requestedChat.isPresent()) {
             Chat toDelete = requestedChat.get();

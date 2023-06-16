@@ -29,7 +29,7 @@ const ChatList = () => {
 
     const deleteChat = async (chatId) => {
         try {
-            await axios.delete(`http://localhost:8080/api/chats/?id=`+ chatId);
+            await axios.post(`http://localhost:8080/api/Suprchat?id=`+ chatId);
 
             const updatedChats = myChats.filter((chat) => chat.id !== chatId);
             setMyChats(updatedChats);
