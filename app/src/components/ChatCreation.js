@@ -32,13 +32,12 @@ const PlanifierDiscussion = () => {
         console.log('')
         console.log(chat);
         console.log(typeof (chat.creationDate))
-        axios.post("http://localhost:8080/api/chat", {
-            creatorId: creatorId,
-            title: chat.title,
-            description: chat.description,
-            creationDate: chat.creationDate,
-            expirationDate: chat.expirationDate
-        })
+        console.log(typeof (creatorId))
+        console.log(typeof (chat.description))
+        console.log(typeof (chat.creationDate))
+        console.log(creatorId)
+        axios.post(`http://localhost:8080/api/chat?creatorId=${creatorId}&title=${chat.title}&description=${chat.description}&creationDate=${chat.creationDate}&expirationDate=${chat.expirationDate}`)
+
             .then(r => {
                 console.log(r);
                 setNotification('Chat créé avec succès !');

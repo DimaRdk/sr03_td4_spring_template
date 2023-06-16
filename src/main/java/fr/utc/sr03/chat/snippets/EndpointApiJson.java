@@ -94,11 +94,13 @@ public class EndpointApiJson {
 
     @PostMapping("chat")
     @ResponseBody
-    public void addNewChat( @RequestParam Long creatorId,@RequestParam String title,@RequestParam String description , @RequestParam String creationDate ,@RequestParam String expirationDate ) throws UserNotFoundException {
-        User creator = userRepository.findById(creatorId)
+    public void addNewChat( @RequestParam String creatorId,@RequestParam String title,@RequestParam String description , @RequestParam String creationDate ,@RequestParam String expirationDate ) throws UserNotFoundException {
+
+
+
+        Long idTyped = Long.parseLong(creatorId);
+        User creator = userRepository.findById(idTyped)
                 .orElseThrow(() -> new UserNotFoundException());
-
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime creationDateTyped = LocalDateTime.parse(creationDate, formatter);
         LocalDateTime expirationDateTyped = LocalDateTime.parse(expirationDate, formatter);
