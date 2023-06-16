@@ -2,6 +2,7 @@
 .content {
     display: flex;
     padding: 20px;
+    box-sizing: border-box; /* Pour inclure le padding et la border dans la largeur et hauteur totale */
 }
 
 .content > aside {
@@ -24,6 +25,8 @@
 .content > main .table {
     width: 100%;
     border-collapse: collapse;
+    border: 1px solid #e0e0e0; /* Ajoute une bordure autour de la table */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Ajoute un effet d'ombre pour un aspect "levé" */
 }
 
 .content > main .table thead {
@@ -35,7 +38,7 @@
 .content > main .table td {
     padding: 15px;
     border-bottom: 1px solid #e0e0e0;
-    text-align: left;
+    text-align: center;
 }
 
 .content > main .table th {
@@ -50,14 +53,20 @@
 
 .action-buttons {
     display: flex;
+    justify-content: center; /* Centrage horizontal des boutons */
     gap: 8px;
 }
 
 .delete-button {
     color: white;
     background-color: red;
+    padding: 5px 10px; /* Augmenter l'espace autour du texte */
+    border-radius: 3px; /* Rend les boutons arrondis */
 }
+
 .edit-btn {
     color: white;
     background-color: green;
+    padding: 5px 10px; /* Augmenter l'espace autour du texte */
+    border-radius: 3px; /* Rend les boutons arrondis */
 }

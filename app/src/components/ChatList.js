@@ -102,7 +102,7 @@ const ChatList = () => {
                             <th>Description</th>
                             <th>Date de Création</th>
                             <th>Date d'Expiration</th>
-                            <th>Actions</th>
+                            <th className="action-title">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
