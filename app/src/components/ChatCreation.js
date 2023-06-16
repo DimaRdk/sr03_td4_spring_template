@@ -31,15 +31,13 @@ const PlanifierDiscussion = () => {
         e.preventDefault();
         console.log('')
         console.log(chat);
-        axios.post("http://localhost:8080/api/chat",{
-            'title': chat.titre,
-            'description': chat.description,
-            'creationDate': chat.creationDate,
-            'expirationDate': chat.expirationDate,
-        }, {
-            params: {
-                creatorId: creatorId
-            }
+        console.log(typeof (chat.creationDate))
+        axios.post("http://localhost:8080/api/chat", {
+            creatorId: creatorId,
+            title: chat.title,
+            description: chat.description,
+            creationDate: chat.creationDate,
+            expirationDate: chat.expirationDate
         })
             .then(r => {
                 console.log(r);
@@ -52,18 +50,15 @@ const PlanifierDiscussion = () => {
             })
             .catch(error => {
                 if (error.response) {
-
                     console.log(error.response.data);
                     console.log(error.response.status);
                     console.log(error.response.headers);
                 } else if (error.request) {
-
                     console.log(error.request);
                 } else {
-
                     console.log('Error', error.message);
                 }
-            })
+            });
 
     };
 

@@ -10,28 +10,52 @@ const ChatEdition = () => {
     const [notification, setNotification] = useState('');
     const now = new Date().toISOString().slice(0,16);
     const [users, setUsers] = useState([]);
+    const [chatUsers, setChatUsers] = useState([]);
     let currentUser = localStorage.getItem("userId");
+
+
+
     useEffect(() => {
+        axios.get(`http://localhost:8080/api/chat/${chatId}/members`)
+            .then(response => {
+                setChatUsers(response.data);
+                return response.data;
+            })
+            .then(chatMembers => {
+                axios.get(`http://localhost:8080/api/users/`)
+                    .then(response => {
+                        setUsers(response.data.filter(user => user.id != currentUser && !chatMembers.map(chatUser => chatUser.id).includes(user.id)));
+                    })
+                    .catch(error => console.error(`There was an error retrieving the active users: ${error}`));
+            })
+            .catch(error => console.error(`There was an error retrieving the chat members: ${error}`));
 
         axios.get(`http://localhost:8080/api/chat/?id=` + chatId)
             .then(response => {
                 setChat(response.data);
             })
             .catch(error => console.error(`There was an error retrieving the chat: ${error}`));
-
-        axios.get(`http://localhost:8080/api/users/`)
-            .then(response => {
-                console.log(currentUser)
-                setUsers(response.data.filter(user => user.id != currentUser));
-            })
-            .catch(error => console.error(`There was an error retrieving the active users: ${error}`));
     }, [chatId]);
 
     const handleInvite = (userId) => {
         axios.post(`http://localhost:8080/api/${chatId}/invite`, { userId: userId })
             .then(response => {
                 console.log(response);
+                // Refetch chat members
+                axios.get(`http://localhost:8080/api/chat/${chatId}/members`)
+                    .then(response => {
+                        setChatUsers(response.data);
+                        return response.data;
+                    })
+                    .then(chatMembers => {
 
+                        axios.get(`http://localhost:8080/api/users/`)
+                            .then(response => {
+                                setUsers(response.data.filter(user => user.id != currentUser && !chatMembers.map(chatUser => chatUser.id).includes(user.id)));
+                            })
+                            .catch(error => console.error(`There was an error retrieving the active users: ${error}`));
+                    })
+                    .catch(error => console.error(`There was an error retrieving the chat members: ${error}`));
             })
             .catch(error => {
                 console.error(`There was an error inviting the user: ${error}`);
@@ -60,9 +84,34 @@ const ChatEdition = () => {
             });
     };
 
+    const handleSupprimer = (userId) => {
+        axios.delete(`http://localhost:8080/api/chat/${chatId}/members/${userId}`)
+            .then(response => {
+                console.log(response);
+                // Refetch chat members
+                axios.get(`http://localhost:8080/api/chat/${chatId}/members`)
+                    .then(response => {
+                        setChatUsers(response.data);
+                        return response.data;
+                    })
+                    .then(chatMembers => {
+
+                        axios.get(`http://localhost:8080/api/users/`)
+                            .then(response => {
+                                setUsers(response.data.filter(user => user.id != currentUser && !chatMembers.map(chatUser => chatUser.id).includes(user.id)));
+                            })
+                            .catch(error => console.error(`There was an error retrieving the active users: ${error}`));
+                    })
+                    .catch(error => console.error(`There was an error retrieving the chat members: ${error}`));
+            })
+            .catch(error => {
+                console.error(`There was an error removing the user from the chat: ${error}`);
+            });
+    };
+
     return (
         <div>
-            < NavBar />
+            <NavBar />
             {chat && (
                 <div className="form-container">
                     <h2>Modifier une discussion</h2>
@@ -93,32 +142,56 @@ const ChatEdition = () => {
                 </div>
             )}
 
-            {users && (
-                <div className="users-container">
-                    <h2>Utilisateurs actifs</h2>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prenom</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.firstName}</td>
-                                <td>{user.lastName}</td>
-                                <td>
-                                    <button onClick={() => handleInvite(user.id)}>Inviter</button>
-                                </td>
+            {users && chatUsers && (
+                <div className="tables-container">
+                    <div className="users-container">
+                        <h2>Inviter des utilisateurs</h2>
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Action</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {users.map((user) => (
+                                <tr key={user.id}>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>
+                                        <button onClick={() => handleInvite(user.id)}>Inviter</button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="chat-users-container">
+                        <h2>Membres du Chat</h2>
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {chatUsers.map((user) => (
+                                <tr key={user.id}>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>
+                                        <button className="button-delete" onClick={() => handleSupprimer(user.id)}>Supprimer</button>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
-
 
         </div>
     );

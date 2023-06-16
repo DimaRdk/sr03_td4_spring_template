@@ -1,4 +1,4 @@
-const Chat = ({ chat, joinChat, deleteChat ,editChat}) => {
+const Chat = ({ chat, joinChat, deleteChat ,editChat,isInvitedChat}) => {
     const handleJoinChat = () => {
         joinChat(chat.id);
     };
@@ -18,11 +18,21 @@ const Chat = ({ chat, joinChat, deleteChat ,editChat}) => {
             <td>{new Date(chat.creationDate).toLocaleString()}</td>
             <td>{new Date(chat.expirationDate).toLocaleString()}</td>
 
-            <div className="action-buttons">
-                <button onClick={handleJoinChat}>Rejoindre</button>
-                <button onClick={handleDeleteChat} className="delete-button">Supprimer</button>
-                <button onClick={handleEditChat} className="edit-btn">Modifier</button>
-            </div>
+
+            {!isInvitedChat &&
+                <div className="action-buttons">
+                    <button onClick={handleJoinChat}>Rejoindre</button>
+                    <button onClick={handleDeleteChat} className="delete-button">Supprimer</button>
+                    <button onClick={handleEditChat} className="edit-btn">Modifier</button>
+                </div>
+            }
+            {isInvitedChat &&
+                <div className="action-buttons">
+                    <button onClick={handleJoinChat}>Rejoindre</button>
+
+                </div>
+            }
+
         </tr>
     );
 };

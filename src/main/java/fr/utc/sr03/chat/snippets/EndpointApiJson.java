@@ -8,6 +8,7 @@ import fr.utc.sr03.chat.exceptions.UserNotFoundException;
 import fr.utc.sr03.chat.model.Chat;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Constraint;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * URL du endpoint : http://localhost:8080/
@@ -93,11 +94,23 @@ public class EndpointApiJson {
 
     @PostMapping("chat")
     @ResponseBody
-    public void addNewChat(@RequestBody Chat toCreate, @RequestParam Long creatorId) throws UserNotFoundException {
+    public void addNewChat( @RequestParam Long creatorId,@RequestParam String title,@RequestParam String description , @RequestParam String creationDate ,@RequestParam String expirationDate ) throws UserNotFoundException {
         User creator = userRepository.findById(creatorId)
                 .orElseThrow(() -> new UserNotFoundException());
-        toCreate.setCreator(creator);
-        chatRepository.save(toCreate);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime creationDateTyped = LocalDateTime.parse(creationDate, formatter);
+        LocalDateTime expirationDateTyped = LocalDateTime.parse(expirationDate, formatter);
+        Chat newChat = new Chat();
+        newChat.setCreator(creator);
+        newChat.setTitle(title);
+        newChat.setDescription(description);
+        newChat .setCreationDate(creationDateTyped);
+        newChat.setExpirationDate(expirationDateTyped);
+
+        chatRepository.save(newChat);
+
     }
 
     @PutMapping("chat")
@@ -106,6 +119,9 @@ public class EndpointApiJson {
         //TODO verifier que le chat est OK + confirmation
         chatRepository.save(toUpdate);
     }
+
+
+
     @GetMapping("chat")
     @ResponseBody
     public ResponseEntity<Chat> getChatById(@RequestParam Long id)
@@ -118,6 +134,50 @@ public class EndpointApiJson {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("chat/{id}/members")
+    @ResponseBody
+    public ResponseEntity<List<User>> getChatMembers(@PathVariable Long id) {
+        Optional<Chat> optionalChat = chatRepository.findById(id);
+
+        if(optionalChat.isPresent()){
+            Chat chat = optionalChat.get();
+            List<User> members = chat.getMembers();
+            return ResponseEntity.ok(members);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @DeleteMapping("/chat/{chatId}/members/{userId}")
+    @ResponseBody
+    public ResponseEntity<String> removeUserFromChat(@PathVariable Long chatId, @PathVariable Long userId) {
+        Optional<Chat> optionalChat = chatRepository.findById(chatId);
+
+        if(optionalChat.isPresent()){
+            Chat chat = optionalChat.get();
+            List<User> members = chat.getMembers();
+
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if(optionalUser.isPresent()) {
+                User user = optionalUser.get();
+
+                if(members.contains(user)) {
+                    members.remove(user);
+                    chatRepository.save(chat);
+                    return ResponseEntity.ok("User removed successfully from the chat");
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in the chat");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Chat not found");
+        }
+    }
+
 
     @PutMapping("chat/{id}")
     @ResponseBody

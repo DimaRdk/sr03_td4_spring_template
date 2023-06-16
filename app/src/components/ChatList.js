@@ -89,7 +89,7 @@ const ChatList = () => {
                         <tbody>
                         {myChats &&
                             myChats.map((chat) => (
-                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} />
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} isInvitedChat={false } />
 
                             ))}
                         </tbody>
@@ -100,14 +100,15 @@ const ChatList = () => {
                         <tr>
                             <th>Titre</th>
                             <th>Description</th>
-                            <th>Action</th>
+                            <th>Date de Création</th>
+                            <th>Date d'Expiration</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {invitedChats &&
                             invitedChats.map((chat) => (
-                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} />
-
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} isInvitedChat={true} />
                             ))}
                         </tbody>
                     </table>
