@@ -15,6 +15,9 @@ const Chat = ({ chat, joinChat, deleteChat ,editChat}) => {
         <tr>
             <td>{chat.title}</td>
             <td>{chat.description}</td>
+            <td>{new Date(chat.creationDate).toLocaleString()}</td>
+            <td>{new Date(chat.expirationDate).toLocaleString()}</td>
+
             <div className="action-buttons">
                 <button onClick={handleJoinChat}>Rejoindre</button>
                 <button onClick={handleDeleteChat} className="delete-button">Supprimer</button>

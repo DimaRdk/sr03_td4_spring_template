@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useLocation} from 'react-router-dom';
 import './styles/ChatList.css'
-
+import { useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import Chat from './Chat';
 import UserInfo from "./UserInfo";
@@ -15,19 +15,21 @@ const ChatList = () => {
     let loggedUserFirstName = localStorage.getItem("userFirstName");
     let loggedUserLastName = localStorage.getItem("userLastName");
     let loggedUserRole = localStorage.getItem("userRole");
-
+    const navigate = useNavigate();
     const joinChat = async (chatId) => {
         // Logique pour rejoindre un chat avec l'ID spécifié
         console.log(`Rejoindre le chat ${chatId}`);
     };
-    const editChat = async (chatId) => {
-        // Logique pour rejoindre un chat avec l'ID spécifié
+
+
+    const editChat = (chatId) => {
         console.log(`Edit le chat ${chatId}`);
+        navigate(`/chatEdition/${chatId}`);
     };
 
     const deleteChat = async (chatId) => {
         try {
-            await axios.delete(`http://localhost:8080/api/chats/${chatId}`);
+            await axios.delete(`http://localhost:8080/api/chats/?id=`+ chatId);
 
             const updatedChats = myChats.filter((chat) => chat.id !== chatId);
             setMyChats(updatedChats);
@@ -79,13 +81,16 @@ const ChatList = () => {
                         <tr>
                             <th>Titre</th>
                             <th>Description</th>
-                            <th>Action</th>
+                            <th>Date de Création</th>
+                            <th>Date d'Expiration</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {myChats &&
                             myChats.map((chat) => (
-                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat()} />
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} />
+
                             ))}
                         </tbody>
                     </table>
@@ -101,7 +106,8 @@ const ChatList = () => {
                         <tbody>
                         {invitedChats &&
                             invitedChats.map((chat) => (
-                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat()}/>
+                                <Chat key={chat.id} chat={chat} joinChat={joinChat} deleteChat={deleteChat} editChat={editChat} />
+
                             ))}
                         </tbody>
                     </table>

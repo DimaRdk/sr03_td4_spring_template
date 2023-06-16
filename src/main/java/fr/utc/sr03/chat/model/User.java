@@ -4,17 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +36,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "chat_members",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private List<Chat> invitedChats = new ArrayList<>();
 
     @JsonManagedReference
@@ -136,9 +132,11 @@ public class User {
     }
 
     public void addInvitedChat(Chat newChat){
+        if (this.invitedChats == null) {
+            this.invitedChats = new ArrayList<>();
+        }
         this.invitedChats.add(newChat);
     }
-
 
     public boolean getAdmin() {
         return admin;

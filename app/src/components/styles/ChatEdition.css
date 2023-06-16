@@ -79,7 +79,7 @@ button:hover {
 .table th {
     padding-top: 12px;
     padding-bottom: 12px;
-
+    background-color: grey;
     color: white;
 }
 

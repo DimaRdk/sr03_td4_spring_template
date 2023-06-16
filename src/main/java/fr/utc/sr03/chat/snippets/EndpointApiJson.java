@@ -43,6 +43,21 @@ public class EndpointApiJson {
             throw new UserNotFoundException();
         }
     }
+    @PostMapping("connexion")
+    @ResponseBody
+    public User canLog(@RequestBody User requestedUser) throws UserNotFoundException {
+        Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(requestedUser.getMail()));
+        if (fetchedUser.isPresent()) {
+            User user = fetchedUser.get();
+            if (user.getPassword().equals(requestedUser.getPassword())) {
+                return user;
+            } else {
+                throw new UserNotFoundException();
+            }
+        } else {
+            throw  new UserNotFoundException();
+        }
+    }
 
     @GetMapping("createdChat")
     @ResponseBody // Pour faire sans template html
@@ -89,21 +104,80 @@ public class EndpointApiJson {
         //TODO verifier que le chat est OK + confirmation
         chatRepository.save(toUpdate);
     }
-
-
-    @PostMapping("login")
+    @GetMapping("chat")
     @ResponseBody
-    public User canLog(@RequestBody User requestedUser) throws UserNotFoundException {
-        Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(requestedUser.getMail()));
-        if (fetchedUser.isPresent()) {
-            User user = fetchedUser.get();
-            if (user.getPassword().equals(requestedUser.getPassword())) {
-                return user;
-            } else {
-                throw new UserNotFoundException();
-            }
+    public ResponseEntity<Chat> getChatById(@RequestParam Long id)
+    {
+        Optional<Chat> optionalChat = chatRepository.findById(id);
+
+        if(optionalChat.isPresent()){
+            return ResponseEntity.ok(optionalChat.get());
         } else {
-            throw  new UserNotFoundException();
+            return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("chat/{id}")
+    @ResponseBody
+    public ResponseEntity<Chat> updateChat(@PathVariable Long id, @RequestBody Chat updatedChat) {
+        Optional<Chat> optionalChat = chatRepository.findById(id);
+
+        if (optionalChat.isPresent()) {
+            Chat existingChat = optionalChat.get();
+
+            // Mise à jour des champs du chat existant avec les valeurs du chat mis à jour
+            existingChat.setTitle(updatedChat.getTitle());
+            existingChat.setDescription(updatedChat.getDescription());
+
+            existingChat.setExpirationDate(updatedChat.getExpirationDate());
+
+            // Sauvegarde du chat mis à jour dans la base de données
+            chatRepository.save(existingChat);
+
+            // Retourne le chat mis à jour avec un statut HTTP 200 (OK)
+            return ResponseEntity.ok(existingChat);
+        } else {
+            // Si aucun chat n'est trouvé avec l'ID donné, retourne un statut HTTP 404 (Non trouvé)
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+        @GetMapping("users")
+        @ResponseBody
+        public ResponseEntity<List<User>> getActiveUsers() {
+            // Assuming there's a method in your UserRepository called findUsersByIsActive
+            List<User> activeUsers = userRepository.findByIsActive(true);
+
+            return ResponseEntity.ok(activeUsers);
+        }
+
+
+    @PostMapping("/{chatId}/invite")
+    @ResponseBody
+    public ResponseEntity<?> inviteUser(@PathVariable Long chatId, @RequestBody Map<String, Long> body) {
+        Long userId = body.get("userId");
+        if (userId == null) {
+            return ResponseEntity.badRequest().body("User ID must be provided");
+        }
+
+        Chat chat = chatRepository.findById(chatId).orElse(null);
+        if (chat == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        user.addInvitedChat(chat);
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok().body("User invited successfully");
+    }
+
+
+
 }

@@ -50,13 +50,13 @@ public class Chat{
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "chat_members",
             joinColumns = @JoinColumn(name = "chat_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> members;
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> members = new ArrayList<>();
 
     public Chat() {
 
@@ -83,6 +83,13 @@ public class Chat{
 //    }
 
 
+    public void setCreationDate(LocalDateTime time){
+        this.creationDate = time ;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
     public void addMembers(User u){
         if(this.members!=null){
