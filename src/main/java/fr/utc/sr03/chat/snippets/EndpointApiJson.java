@@ -8,6 +8,7 @@ import fr.utc.sr03.chat.exceptions.UserNotFoundException;
 import fr.utc.sr03.chat.model.Chat;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,8 @@ import java.util.Optional;
 /**
  * URL du endpoint : http://localhost:8080/
  */
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+
 @RestController
 @RequestMapping("api")
 public class EndpointApiJson {
@@ -43,13 +45,13 @@ public class EndpointApiJson {
             throw new UserNotFoundException();
         }
     }
-    @PostMapping("login")
+    @GetMapping("login")
     @ResponseBody
-    public User canLog(@RequestBody User requestedUser) throws UserNotFoundException {
-        Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(requestedUser.getMail()));
+    public User canLog(@RequestParam String mail, @RequestParam String password) throws UserNotFoundException {
+        Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(mail));
         if (fetchedUser.isPresent()) {
             User user = fetchedUser.get();
-            if (user.getPassword().equals(requestedUser.getPassword())) {
+            if (user.getPassword().equals(password)) {
                 return user;
             } else {
                 throw new UserNotFoundException();
