@@ -2,7 +2,7 @@ import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import './styles/Login.css'
-
+import Banierre from "./Banierre";
 
 const Login = (props) => {
     const [mail, setMail] = useState('')
@@ -59,7 +59,11 @@ const Login = (props) => {
     }
 
     return (
+
         <div className="login-container">
+            <div className="login-banner"> {/* Ajout de la bannière ici */}
+                <h1>Ut'Chat</h1>
+            </div>
             <form>
                 <div className="mb-3">
                     <label htmlFor="mail" className="form-label">Email</label>

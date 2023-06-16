@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {useLocation} from 'react-router-dom';
 import './styles/ChatList.css'
 import { useNavigate } from 'react-router-dom';
-import NavBar from './NavBar';
+import NavBar from './NavBar'
+import Banierre from "./Banierre";
 import Chat from './Chat';
 import UserInfo from "./UserInfo";
 import axios from "axios";
@@ -70,6 +71,7 @@ const ChatList = () => {
 
     return (
         <div>
+            <Banierre />
             <NavBar />
             <div className="content">
                 <UserInfo firstname={ loggedUserFirstName} lastname={loggedUserLastName} role={loggedUserRole} />

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import './styles/ChatEdition.css';
 import NavBar from "./NavBar";
 import axios from "axios";
-
+import Banierre from "./Banierre";
 const ChatEdition = () => {
     const { chatId } = useParams();
     const [chat, setChat] = useState(null);
@@ -111,6 +111,7 @@ const ChatEdition = () => {
 
     return (
         <div>
+            <Banierre />
             <NavBar />
             {chat && (
                 <div className="form-container">

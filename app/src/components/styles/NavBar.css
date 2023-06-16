@@ -1,6 +1,6 @@
 .navbar {
     width: 100%;
-    background-color: #e8f4fa; /* Un bleu très pâle */
+    background: linear-gradient(to right, dodgerblue, midnightblue); /* Dégradé de bleu */
     padding: 10px 0;
     box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.1);
 }
@@ -14,20 +14,16 @@
 }
 
 .nav-item {
-    border-right: 2px solid #007BFF; /* Une bordure bleue plus large pour plus de visibilité */
     padding: 0 15px;
-}
-
-.nav-item:last-child {
-    border-right: none;
 }
 
 .nav-link {
     text-decoration: none;
-    color: #333;
+    color: #fff; /* Couleur du texte en blanc pour contraster avec le fond bleu */
     font-weight: bold;
+    transition: color 0.3s ease; /* Ajoute une transition douce lors du changement de couleur */
 }
 
 .nav-link:hover {
-    color: #007BFF;
+    color: #FFD700; /* Couleur d'or lors du survol pour un contraste élevé */
 }

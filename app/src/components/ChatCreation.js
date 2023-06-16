@@ -3,6 +3,7 @@ import {useLocation} from "react-router-dom";
 import './styles/PlanifierDiscussion.css'
 import NavBar from "./NavBar";
 import axios from "axios";
+import Banierre from "./Banierre";
 const PlanifierDiscussion = () => {
     let creatorId = localStorage.getItem("userId");
     const [notification, setNotification] = useState('');
@@ -58,6 +59,7 @@ const PlanifierDiscussion = () => {
 
     return (
         <div>
+            <Banierre />
              < NavBar />
 
             <div className="form-container">

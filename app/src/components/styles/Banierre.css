@@ -1,0 +1,10 @@
+
+.site-banner {
+    background: linear-gradient(to right, lightslategrey, dimgrey); /* Dégradé de couleurs */
+    color: white; /* Couleur du texte */
+    padding: 1px 0; /* Espacement autour du texte */
+    text-align: center; /* Centrer le texte */
+    font-size: 1.5em; /* Taille du texte */
+    letter-spacing: 2px; /* Espacement des lettres */
+    border-bottom: 3px solid rgba(0, 0, 0, 0.2); /* Bordure inférieure pour ajouter un effet 3D */
+}
