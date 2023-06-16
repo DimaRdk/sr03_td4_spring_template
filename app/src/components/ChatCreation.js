@@ -29,13 +29,8 @@ const PlanifierDiscussion = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('')
-        console.log(chat);
-        console.log(typeof (chat.creationDate))
-        console.log(typeof (creatorId))
-        console.log(typeof (chat.description))
-        console.log(typeof (chat.creationDate))
-        console.log(creatorId)
+        console.log(chat.title)
+
         axios.post(`http://localhost:8080/api/chat?creatorId=${creatorId}&title=${chat.title}&description=${chat.description}&creationDate=${chat.creationDate}&expirationDate=${chat.expirationDate}`)
 
             .then(r => {
@@ -72,7 +67,7 @@ const PlanifierDiscussion = () => {
 
                     <div className="form-field">
                         <label>Titre:</label>
-                        <input type="text" name="titre" value={chat.titre} onChange={handleChange} required />
+                        <input type="text" name="title" value={chat.title} onChange={handleChange} required />
                     </div>
                     <div className="form-field">
                         <label>Description:</label>
