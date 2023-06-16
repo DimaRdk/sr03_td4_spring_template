@@ -43,7 +43,7 @@ public class EndpointApiJson {
             throw new UserNotFoundException();
         }
     }
-    @PostMapping("connexion")
+    @PostMapping("login")
     @ResponseBody
     public User canLog(@RequestBody User requestedUser) throws UserNotFoundException {
         Optional<User> fetchedUser = Optional.ofNullable(userRepository.findByMail(requestedUser.getMail()));

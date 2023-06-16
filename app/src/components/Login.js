@@ -18,7 +18,9 @@ const Login = (props) => {
         localStorage.removeItem("userRole");
         event.preventDefault();
         axios.post("http://localhost:8080/api/login", {
-                'password' : password
+            'mail' : mail,
+            'password' : password
+        })
             .then(
 
                 (res) => {
@@ -32,9 +34,7 @@ const Login = (props) => {
                     localStorage.setItem("userRole", attemptedUser.admin);
                     navigate("/chats");
                 })
-            .catch(
-                console.log('erreur ici')
-            );
+            .catch();
         // TODO faire le mécanisme lorsque mauvaise connexion
     }
 
