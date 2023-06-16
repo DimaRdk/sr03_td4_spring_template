@@ -21,7 +21,7 @@ body{
 }
 
 .login-container > form{
-    height: 275px;
+    height: 350px;
     width: 350px;
     border: 1px solid #ccc;
     padding: 12px;
@@ -65,4 +65,13 @@ main{
 .navbar-brand, .nav-link {
     color: #fff;
 }
+body {
+    height: 100vh;
+}
+
+.card {
+    width: 400px;
+    max-width: 90%;
+}
+
 

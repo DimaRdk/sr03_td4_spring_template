@@ -4,6 +4,7 @@ import fr.utc.sr03.chat.dao.UserRepository;
 import fr.utc.sr03.chat.exceptions.UserNotFoundException;
 import fr.utc.sr03.chat.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,37 +12,53 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * URL de base du endpoint : http://localhost:8080/admin<br>
- * ex users : http://localhost:8080/admin/users
- */
+
 @Controller
 @RequestMapping("admin")
 public class AdminController {
     @Autowired
     private UserRepository userRepository;
 
+
+
     @GetMapping()
-    public String getDashboard(Model model) {
+    public String getDashboard(HttpSession session,Model model) {
+
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "admin";
     }
 
     @GetMapping("disabledUsers")
-    public String getDisabledUsers(Model model) {
+    public String getDisabledUsers(HttpSession session, Model model) {
+
+        User user = (User) session.getAttribute("loggedInUser");
+
+
+        if (user == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "disabledUsers";
     }
 
     @GetMapping("disableUser")
-    public String disableUser(@RequestParam Long id) throws UserNotFoundException {
+    public String disableUser(HttpSession session , Model model,@RequestParam Long id) throws UserNotFoundException {
+        User userLogged = (User) session.getAttribute("loggedInUser");
+
+
+        if (userLogged == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         Optional<User> toDisable = userRepository.findById(id);
         if (toDisable.isPresent()){
             User user = toDisable.get();
@@ -55,7 +72,15 @@ public class AdminController {
     }
 
     @GetMapping("enableUser")
-    public String enableUser(@RequestParam Long id) throws UserNotFoundException {
+    public String enableUser(HttpSession session, Model model,@RequestParam Long id) throws UserNotFoundException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+
+        if (loggedInUser == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
+
         Optional<User> toEnable = userRepository.findById(id);
         if (toEnable.isPresent()){
             User user = toEnable.get();
@@ -69,7 +94,14 @@ public class AdminController {
     }
 
     @GetMapping("deleteUser")
-    public String deleteUser(@RequestParam Long id) throws UserNotFoundException {
+    public String deleteUser(HttpSession session,Model model,@RequestParam Long id) throws UserNotFoundException {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+
+        if (loggedInUser == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         Optional<User> toDelete = userRepository.findById(id);
         if (toDelete.isPresent()){
             User user = toDelete.get();
@@ -82,13 +114,27 @@ public class AdminController {
     }
 
     @GetMapping("createUser")
-    public String getLogin(Model model) {
+    public String getLogin(HttpSession session,Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+
+
+        if (user == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         model.addAttribute("user", new User());
         return "createUser";
     }
 
     @PostMapping("createUser")
-    public String createUser(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String createUser(HttpSession session, Model model,@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        User userlog = (User) session.getAttribute("loggedInUser");
+
+
+        if (userlog == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("message", "Erreur lors de la création d'un utilisateur");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
@@ -135,7 +181,14 @@ public class AdminController {
     }
 
     @GetMapping("editUser")
-    public String getEditForm(@RequestParam Long id, Model model) throws UserNotFoundException {
+    public String getEditForm(HttpSession session,@RequestParam Long id, Model model) throws UserNotFoundException {
+        User userlogged = (User) session.getAttribute("loggedInUser");
+
+
+        if (userlogged == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         Optional<User> toEdit = userRepository.findById(id);
         if (toEdit.isPresent()){
             User user = toEdit.get();
@@ -148,7 +201,15 @@ public class AdminController {
     }
 
     @PostMapping("editUser")
-    public String editUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) throws UserNotFoundException {
+    public String editUser(HttpSession session, Model model, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) throws UserNotFoundException {
+
+        User userLogged = (User) session.getAttribute("loggedInUser");
+
+
+        if (userLogged == null) {
+            model.addAttribute("error", "Veuillez vous connecter.");
+            return "redirect:/login";
+        }
         if (bindingResult.hasErrors()) {
             System.out.println("Erreur lors de la modification d'un utilisateur");
             return "redirect:/admin";
