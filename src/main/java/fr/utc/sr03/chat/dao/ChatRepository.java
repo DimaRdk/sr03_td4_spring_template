@@ -12,6 +12,7 @@ import java.util.List;
 public interface ChatRepository extends ChatRepositoryCustom , JpaRepository<Chat, Long>,CrudRepository <Chat,Long> {
 
     Chat findByTitle(@Param("title") String title);
+    Chat findByTitle(@Param("id") Long id);
     List<Chat> findByCreator_Id(Long creatorId);
 
     List<Chat> findByMembers_Id(Long user_id);

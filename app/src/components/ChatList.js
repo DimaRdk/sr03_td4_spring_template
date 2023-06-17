@@ -2,13 +2,22 @@ import React, {useEffect, useState} from "react";
 import {useLocation} from 'react-router-dom';
 import './styles/ChatList.css'
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Modal from 'react-modal'
 import NavBar from './NavBar'
 import Banierre from "./Banierre";
 import Chat from './Chat';
 import UserInfo from "./UserInfo";
 import axios from "axios";
+import ChatSocket from "./ChatSocket";
+import FenetreChat from "./FenetreChat";
 let createdChats;
 let invitedChats;
+
+
+
+
+
 const ChatList = () => {
     const [myChats, setMyChats] = useState([]);
     const [invitedChats, setInvitedChats] = useState([]);
@@ -17,9 +26,21 @@ const ChatList = () => {
     let loggedUserLastName = localStorage.getItem("userLastName");
     let loggedUserRole = localStorage.getItem("userRole");
     const navigate = useNavigate();
-    const joinChat = async (chatId) => {
-        // Logique pour rejoindre un chat avec l'ID spécifié
-        console.log(`Rejoindre le chat ${chatId}`);
+    const [selectedChatId, setSelectedChatId] = useState(null);
+    const [selectedPseudo, setSelectedPseudo] = useState(null);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const joinChat = (chatId) => {
+
+        setSelectedChatId(chatId);
+        setSelectedPseudo(loggedUserFirstName+' '+loggedUserLastName);
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        setSelectedChatId(null);
+        setSelectedPseudo(null);
     };
 
 
@@ -120,6 +141,20 @@ const ChatList = () => {
                             ))}
                         </tbody>
                     </table>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={closeModal}
+                        contentLabel="Fenêtre de chat"
+                        style={{
+                            overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+                            content: { color: 'lightsteelblue' }
+                        }}
+                    >
+                        {selectedChatId && selectedPseudo  &&(
+                            <FenetreChat chatId={selectedChatId} pseudo={selectedPseudo} />
+                        )}
+                        <button onClick={closeModal}>Fermer</button>
+                    </Modal>
                 </main>
             </div>
         </div>
