@@ -67,7 +67,13 @@ public class EndpointApiJson {
         if (fetchedUser.isPresent()) {
             User user = fetchedUser.get();
             if (user.getPassword().equals(password)) {
-                return user;
+                if(user.getIsActive()){
+                    return user;
+                }else{
+
+                    throw new UserNotFoundException();
+                }
+
             } else {
                 throw new UserNotFoundException();
             }

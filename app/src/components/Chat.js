@@ -1,6 +1,6 @@
 const Chat = ({ chat, joinChat, deleteChat ,editChat,isInvitedChat}) => {
     const handleJoinChat = () => {
-        joinChat(chat.id);
+        joinChat(chat.id , chat.title);
     };
 
     const handleDeleteChat = () => {

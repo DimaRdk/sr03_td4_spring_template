@@ -48,7 +48,7 @@ public class ChatServer {
     public void open(Session session, @PathParam("chatid") long chatid,
                      @PathParam("pseudo") String pseudo ) {
 
-        sendMessage("Admin >>> Connection established for " + pseudo,
+        sendMessage("L'utilsateur " + pseudo+" viens de rejuindre le chat",
                 chatid );
         session.getUserProperties().put( "pseudo", pseudo );
         session.getUserProperties().put( "chatid", chatid );
@@ -64,7 +64,7 @@ public class ChatServer {
                 }
             }
         }
-        sendMessage("[UserConnectedList]> " + pseudoList.toString(),
+        sendMessage("Information les utilisateurs connectés acutellement :  " + pseudoList.toString(),
                 chatid);
         pseudoList.clear();
     }
@@ -76,7 +76,7 @@ public class ChatServer {
         );
         long chatid = (long) session.getUserProperties().get( "chatid" );
         sessions.remove( session.getId() );
-        sendMessage("Admin >>> Connection closed for " + pseudo, chatid );
+        sendMessage("Information : L'utilisateur " + pseudo +" a quité le chat.", chatid );
         /*...*/
     }
 
@@ -90,7 +90,7 @@ public class ChatServer {
         String pseudo = (String) session.getUserProperties().get( "pseudo"
         );
         long chatid = (long) session.getUserProperties().get( "chatid" );
-        String fullMessage = pseudo + " >>> " + message;
+        String fullMessage = pseudo + " : " + message;
         sendMessage(fullMessage, chatid);
     }
 

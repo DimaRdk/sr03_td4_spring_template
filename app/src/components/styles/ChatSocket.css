@@ -1,0 +1,31 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 16px;
+}
+
+.chatWindow {
+    flex-grow: 1;
+    overflow: auto;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.messageInput {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 16px;
+}
+
+.textField {
+    flex-grow: 1;
+    margin-right: 16px;
+    border-radius: 20px;
+}
+
+.sendButton {
+    border-radius: 20px;
+}

@@ -28,10 +28,11 @@ const ChatList = () => {
     const navigate = useNavigate();
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [selectedPseudo, setSelectedPseudo] = useState(null);
+    const [selectedTitle, setSelectedTitle] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const joinChat = (chatId) => {
-
+    const joinChat = (chatId,chatTitle) => {
+        setSelectedTitle(chatTitle);
         setSelectedChatId(chatId);
         setSelectedPseudo(loggedUserFirstName+' '+loggedUserLastName);
         setModalIsOpen(true);
@@ -44,7 +45,7 @@ const ChatList = () => {
     };
 
 
-    const editChat = (chatId) => {
+    const editChat = (chatId, ) => {
         console.log(`Edit le chat ${chatId}`);
         navigate(`/chatEdition/${chatId}`);
     };
@@ -66,15 +67,19 @@ const ChatList = () => {
                     }
 
 
-    async function fetchData() {
-
+        async function fetchData() {
             let fetchedCreatedChats;
             let fetchedInvitedChats;
 
             try {
-
                 const createdChatsResponse = await axios.get("http://localhost:8080/api/createdChat/?id=" + loggedUserID);
                 fetchedCreatedChats = createdChatsResponse.data;
+
+                fetchedCreatedChats.forEach(async (chat) => {
+                    if (new Date(chat.expirationDate) < new Date()) {
+                        await deleteChat(chat.id);
+                    }
+                });
             } catch (error) {
                 console.error("Error fetching created chats:", error);
             }
@@ -82,6 +87,12 @@ const ChatList = () => {
             try {
                 const invitedChatsResponse = await axios.get("http://localhost:8080/api/invitedChat?id=" + loggedUserID);
                 fetchedInvitedChats = invitedChatsResponse.data;
+
+                fetchedInvitedChats.forEach(async (chat) => {
+                    if (new Date(chat.expirationDate) < new Date()) {
+                        await deleteChat(chat.id);
+                    }
+                });
             } catch (error) {
                 console.error("Error fetching invited chats:", error);
             }
@@ -146,14 +157,22 @@ const ChatList = () => {
                         onRequestClose={closeModal}
                         contentLabel="Fenêtre de chat"
                         style={{
-                            overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
-                            content: { color: 'lightsteelblue' }
+                            overlay: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
+                            content: {
+                                width: '60%',
+                                height: '60%',
+                                top: '25%',
+                                left: '25%',
+                                transform: 'translate(-25%, -25%)',
+                                color: 'lightsteelblue'
+                            }
                         }}
                     >
+
                         {selectedChatId && selectedPseudo  &&(
-                            <FenetreChat chatId={selectedChatId} pseudo={selectedPseudo} />
+                            <FenetreChat chatId={selectedChatId} pseudo={selectedPseudo} title={selectedTitle} close={closeModal}/>
                         )}
-                        <button onClick={closeModal}>Fermer</button>
+
                     </Modal>
                 </main>
             </div>
