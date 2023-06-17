@@ -73,3 +73,23 @@
     font-size: 2.5rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
+
+.custom-alert {
+    color: darkred;
+    padding: 15px;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 16px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+

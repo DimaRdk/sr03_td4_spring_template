@@ -7,16 +7,20 @@ import Banierre from "./Banierre";
 const Login = (props) => {
     const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [loginAttempts, setLoginAttempts] = useState(0);
     const navigate = useNavigate();
     let attemptedUser;
 
     const handleLogin = async (event) => {
-        console.log('laala')
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userFirstName");
-        localStorage.removeItem("userLastName");
-        localStorage.removeItem("userRole");
         event.preventDefault();
+        setErrorMessage(null);  // Reset the error message on every login attempt
+
+        if (loginAttempts >= 5) {
+            setErrorMessage('Trop de tentatives de connexion. Veuillez réessayer plus tard.');
+            return;
+        }
+
         axios.get("http://localhost:8080/api/login", {
             params: {
                 mail: mail,
@@ -26,45 +30,32 @@ const Login = (props) => {
                 'Content-Type': 'application/json'
             }
         })
-            .then(
+            .then((res) => {
+                attemptedUser = res.data;
 
-                (res) => {
-                    console.log('on est la ')
-                    console.log(res);
-                    attemptedUser = res.data;
-
-                    localStorage.setItem("userId", attemptedUser.id);
-                    localStorage.setItem("userFirstName", attemptedUser.firstName);
-                    localStorage.setItem("userLastName", attemptedUser.lastName);
-                    localStorage.setItem("userRole", attemptedUser.admin);
-                    navigate("/chats");
-                })
+                localStorage.setItem("userId", attemptedUser.id);
+                localStorage.setItem("userFirstName", attemptedUser.firstName);
+                localStorage.setItem("userLastName", attemptedUser.lastName);
+                localStorage.setItem("userRole", attemptedUser.admin);
+                setLoginAttempts(0);  // Reset the attempts count on successful login
+                navigate("/chats");
+            })
             .catch((error) => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
+                if (error.response && error.response.status === 404) {
+                    setErrorMessage('Email ou mot de passe incorrect');
+                    setLoginAttempts(prevAttempts => prevAttempts + 1);  // Increase the attempts count on failed login
                 } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
+                    setErrorMessage('Une erreur est survenue. Veuillez réessayer.');
                 }
-                console.log(error.config);
             });
-        // TODO faire le mécanisme lorsque mauvaise connexion
     }
 
     return (
-
         <div className="login-container">
-            <div className="login-banner"> {/* Ajout de la bannière ici */}
+            <div className="login-banner">
                 <h1>Ut'Chat</h1>
             </div>
-            <form>
+            <form onSubmit={handleLogin}>
                 <div className="mb-3">
                     <label htmlFor="mail" className="form-label">Email</label>
                     <input type="email" name="mail" className="form-control" id="mail" value={mail}
@@ -78,9 +69,9 @@ const Login = (props) => {
                            onChange={e => {
                                setPassword(e.target.value)
                            }} required={true}/>
-                    <div className="invalid-feedback">Login ou mot de passe incorrect</div>
                 </div>
-                <button type="submit" className="btn btn-primary w-100" onClick={handleLogin}>Connexion</button>
+                {errorMessage && <div className="alert alert-danger custom-alert" role="alert">{errorMessage}</div>}
+                <button type="submit" className="btn btn-primary w-100">Connexion</button>
 
                 <Link to="/forgotPassword" className="btn btn-link">Mot de passe oublié ?</Link>
             </form>
