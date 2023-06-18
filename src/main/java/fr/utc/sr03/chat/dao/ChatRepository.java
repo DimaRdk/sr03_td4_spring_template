@@ -9,24 +9,22 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * Chat repository to access chats in database
+ */
 public interface ChatRepository extends ChatRepositoryCustom , JpaRepository<Chat, Long>,CrudRepository <Chat,Long> {
 
-    Chat findByTitle(@Param("title") String title);
-    Chat findByTitle(@Param("id") Long id);
+    /**
+     * Find chat by id
+     * @param creatorId id of the chatCreator
+     * @return chat
+     */
     List<Chat> findByCreator_Id(Long creatorId);
 
+    /**
+     * Find chat by member
+     * @param user_id id of a member
+     * @return chat
+     */
     List<Chat> findByMembers_Id(Long user_id);
-
-
-    // Ajouter et mettre à jour un chat (ces opérations sont fournies par JpaRepository)
-    // save(Chat chat) : pour ajouter un nouveau chat ou mettre à jour un chat existant
-    // exemple d'utilisation :
-    // Chat newChat = new Chat(...);
-    // chatRepository.save(newChat);
-
-    // Chat updatedChat = chatRepository.findById(chatId).orElseThrow(...);
-    // updatedChat.setTitle(newTitle);
-    // chatRepository.save(updatedChat);
-
-    // Récupérer un chat par son ID
 }

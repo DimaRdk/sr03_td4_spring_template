@@ -8,16 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
+/**
+ * Users repository to access users in database
+ */
 @Repository
 public class UserRepositoryImpl implements UserRepositoryCustom {
-
-    @PersistenceContext
-    EntityManager entityManager;
-
-    @Override
-    public List<User> findAdminOnly() {
-        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.admin = :admin", User.class).setParameter("admin", true);
-
-        return query.getResultList();
-    }
 }

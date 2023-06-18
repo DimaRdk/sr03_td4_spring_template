@@ -7,16 +7,30 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+/**
+ * User repository to access users in database
+ */
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
-    // Requete generee automatiquement par Spring
-    User findByMailAndPassword(@Param("mail") String mail, @Param("password") String password);
 
-    // Requete creee manuellement
-    @Query("SELECT u FROM User u WHERE LENGTH(u.lastName) >= :lastNameLength")
-    List<User> findByLastNameLength(@Param("lastNameLength") int lastNameLength);
+    /**
+     * Find user by mail
+     * @param mail mail of the user
+     * @return user
+     */
     User findByMail(@Param("mail") String mail);
+
+    /**
+     * Find user by password
+     * @param password password of the user
+     * @return user
+     */
     User findByPassword(@Param("password") String password);
 
+    /**
+     * Find users by isActive
+     * @param isActive isActive of the user
+     * @return Active users
+     */
     List<User> findByIsActive(@Param("isActive") boolean isActive);
 
 }

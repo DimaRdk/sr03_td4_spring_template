@@ -10,17 +10,31 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Service to send emails
+ */
 @Service
 public class EmailService {
 
+    /**
+     * JavaMailSender to send emails
+     */
     private final JavaMailSender javaMailSender;
 
-
+    /**
+     * Constructor
+     * @param javaMailSender JavaMailSender to send emails
+     */
     @Autowired
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
+    /**
+     * Send an email to a user
+     * @param to email address of the user
+     * @param password password of the user
+     */
     public void sendPasswordToUser(String to, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("moins.termost@gmail.com");

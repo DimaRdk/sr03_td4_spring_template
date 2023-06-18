@@ -10,6 +10,9 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User entity
+ */
 @Entity
 @Table(name = "sr03_users")
 
@@ -31,8 +34,6 @@ public class User {
     @Column(name = "mail", nullable = false, unique = true)
     private String mail;
 
-    //@NotBlank(message = "L'email est obligatoire")
-    //@Size(min=8, message = "Le mot de passe doit comporter au moins 8 caractères")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -144,14 +145,6 @@ public class User {
 
     public void setAdmin(boolean admin){
         this.admin = admin;
-    }
-
-    public void setCreatedChat(List<Chat> createdChat) {
-        this.createdChat = createdChat;
-    }
-
-    public void addCreatedChat(Chat newChat){
-        this.createdChat.add(newChat);
     }
 
     public List<Chat> getCreatedChat(){

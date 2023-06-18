@@ -20,12 +20,14 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Chat server
+ */
 @Component
 @ServerEndpoint(value="/chatserver/{chatid}/{pseudo}", configurator= ChatServer.EndpointConfigurator.class)
 public class ChatServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServer.class);
-
-    private static ChatServer singleton = new ChatServer();
+    private static final ChatServer singleton = new ChatServer();
     private final Hashtable<String, Session> sessions = new Hashtable<>();
 
 
@@ -42,7 +44,6 @@ public class ChatServer {
     public static ChatServer  getInstance() {
         return ChatServer.singleton;
     }
-
 
     @OnOpen
     public void open(Session session, @PathParam("chatid") long chatid,
@@ -64,7 +65,7 @@ public class ChatServer {
                 }
             }
         }
-        sendMessage("Information les utilisateurs connectés acutellement :  " + pseudoList.toString(),
+        sendMessage("Information les utilisateurs connectés acutellement :  " + pseudoList,
                 chatid);
         pseudoList.clear();
     }

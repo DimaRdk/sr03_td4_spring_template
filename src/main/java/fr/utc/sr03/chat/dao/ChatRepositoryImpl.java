@@ -5,10 +5,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ * Chat repository to access chats in database
+ */
 @Repository
 public class ChatRepositoryImpl implements ChatRepositoryCustom {
-
-    @PersistenceContext
-    EntityManager entityManager;
-
 }

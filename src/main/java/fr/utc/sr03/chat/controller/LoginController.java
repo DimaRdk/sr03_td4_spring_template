@@ -11,14 +11,24 @@ import fr.utc.sr03.chat.dao.ChatRepository;
 import fr.utc.sr03.chat.dao.UserRepository;
 import javax.servlet.http.HttpSession;
 
-
+/**
+ * Controller to handle login page
+ */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 
+    /**
+     * User repository to access users in database
+     */
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Show login page
+     * @param model model to add attributes used in view
+     * @return login page
+     */
     @GetMapping
     public String getLogin(Model model) {
 
@@ -26,6 +36,10 @@ public class LoginController {
         return "login";
     }
 
+    /**
+     * Show forgot password page
+     * @return forgot password page
+     */
     @GetMapping("/forgotPassword")
     public String showForgotPasswordPage() {
         return "forgotPassword";
@@ -33,6 +47,13 @@ public class LoginController {
 
     private static final int MAX_ATTEMPTS = 5;
 
+    /**
+     * Handle login form
+     * @param user user to login
+     * @param model model to add attributes used in view
+     * @param session session to store user
+     * @return login page if login failed, admin page if login succeeded
+     */
     @PostMapping
     public String postLogin(@ModelAttribute User user, Model model, HttpSession session) {
         User userAttempted = userRepository.findByMail(user.getMail());

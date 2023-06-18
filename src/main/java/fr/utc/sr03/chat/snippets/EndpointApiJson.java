@@ -26,14 +26,31 @@ import java.util.stream.Collectors;
  */
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 
+/**
+ * Endpoint for API
+ */
 @RestController
 @RequestMapping("api")
 public class EndpointApiJson {
-	@Autowired
+
+    /**
+     * User repository
+     */
+    @Autowired
     private UserRepository userRepository;
+
+    /**
+     * Chat repository
+     */
     @Autowired
     private ChatRepository chatRepository;
 
+    /**
+     * Get user details
+     * @param id user id
+     * @return user details
+     * @throws UserNotFoundException if user not found
+     */
     @GetMapping("userDetails")
     @ResponseBody // Pour faire sans template html
     public User getUserDetails(@RequestParam Long id) throws UserNotFoundException {
@@ -47,6 +64,12 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Send new password to user if the mail is known.
+     * @param email user mail.
+     * @return user password.
+     * @throws UserNotFoundException if user not found
+     */
     @GetMapping("forgotPassword")
     @ResponseBody // Pour faire sans template html
     public String getPasswordMail(@RequestParam String email) throws UserNotFoundException {
@@ -60,6 +83,13 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Try to log a user with given password and mail
+     * @param mail user mail
+     * @param password user password
+     * @return User if logged
+     * @throws UserNotFoundException if user not found
+     */
     @GetMapping("login")
     @ResponseBody
     public User canLog(@RequestParam String mail, @RequestParam String password) throws UserNotFoundException {
@@ -82,6 +112,11 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Get chats created by a user
+     * @param id user id
+     * @return chats created by user
+     */
     @GetMapping("createdChat")
     @ResponseBody // Pour faire sans template html
     public List<Chat> getUsersChat(@RequestParam Long id)
@@ -90,6 +125,11 @@ public class EndpointApiJson {
         return requestedChats;
     }
 
+    /**
+     * Get chats where a user is invited
+     * @param id user id
+     * @return chats where user is invited
+     */
     @GetMapping("invitedChat")
     @ResponseBody
     public List<Chat> getUsersInvitation(@RequestParam Long id)
@@ -98,6 +138,12 @@ public class EndpointApiJson {
         return requestedChats;
     }
 
+    /**
+     * Delete a chat
+     * @param id Chat id
+     * @return 204 if deleted
+     * @throws ChatNotFoundException
+     */
     @PostMapping("Suprchat")
     @ResponseBody
     public ResponseEntity<String> deleteChat(@RequestParam String id) throws ChatNotFoundException {
@@ -113,6 +159,15 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Create a chat
+     * @param creatorId chat creator id
+     * @param title chat title
+     * @param description chat description
+     * @param creationDate chat creation date
+     * @param expirationDate chat expiration date
+     * @throws UserNotFoundException
+     */
     @PostMapping("chat")
     @ResponseBody
     public void addNewChat( @RequestParam String creatorId,@RequestParam String title,@RequestParam String description , @RequestParam String creationDate ,@RequestParam String expirationDate ) throws UserNotFoundException {
@@ -133,14 +188,21 @@ public class EndpointApiJson {
 
     }
 
+    /**
+     * Modify chat
+     * @param toUpdate modified chat
+     */
     @PutMapping("chat")
     @ResponseBody
     public void editChat(@RequestBody Chat toUpdate){
         chatRepository.save(toUpdate);
     }
 
-
-
+    /**
+     * Get chat by id
+     * @param id chat id
+     * @return chat
+     */
     @GetMapping("chat")
     @ResponseBody
     public ResponseEntity<Chat> getChatById(@RequestParam Long id)
@@ -154,6 +216,11 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Get chat members
+     * @param id chat id
+     * @return chat members
+     */
     @GetMapping("chat/{id}/members")
     @ResponseBody
     public ResponseEntity<List<User>> getChatMembers(@PathVariable Long id) {
@@ -168,7 +235,12 @@ public class EndpointApiJson {
         }
     }
 
-
+    /**
+     * remove user from chat
+     * @param chatId chat id
+     * @param userId user id
+     * @return 200 if removed
+     */
     @DeleteMapping("/chat/{chatId}/members/{userId}")
     @ResponseBody
     public ResponseEntity<String> removeUserFromChat(@PathVariable Long chatId, @PathVariable Long userId) {
@@ -197,7 +269,12 @@ public class EndpointApiJson {
         }
     }
 
-
+    /**
+     * Update chat
+     * @param id chat id
+     * @param updatedChat chat with updated values
+     * @return updated chat
+     */
     @PutMapping("chat/{id}")
     @ResponseBody
     public ResponseEntity<Chat> updateChat(@PathVariable Long id, @RequestBody Chat updatedChat) {
@@ -223,17 +300,25 @@ public class EndpointApiJson {
         }
     }
 
+    /**
+     * Get all active users
+     * @return all active users
+     */
+    @GetMapping("users")
+    @ResponseBody
+    public ResponseEntity<List<User>> getActiveUsers() {
+        // Assuming there's a method in your UserRepository called findUsersByIsActive
+        List<User> activeUsers = userRepository.findByIsActive(true);
 
-        @GetMapping("users")
-        @ResponseBody
-        public ResponseEntity<List<User>> getActiveUsers() {
-            // Assuming there's a method in your UserRepository called findUsersByIsActive
-            List<User> activeUsers = userRepository.findByIsActive(true);
+        return ResponseEntity.ok(activeUsers);
+    }
 
-            return ResponseEntity.ok(activeUsers);
-        }
-
-
+    /**
+     * Invite the given users in the given chat.
+     * @param chatId Id of the chat you want to invite users to.
+     * @param body Ids of the users to add.
+     * @return HTTP Response code.
+     */
     @PostMapping("/{chatId}/invite")
     @ResponseBody
     public ResponseEntity<?> inviteUser(@PathVariable Long chatId, @RequestBody Map<String, Long> body) {
@@ -258,7 +343,5 @@ public class EndpointApiJson {
 
         return ResponseEntity.ok().body("User invited successfully");
     }
-
-
 
 }

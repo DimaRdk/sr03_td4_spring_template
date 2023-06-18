@@ -21,35 +21,55 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Chat entity
+ */
 @Entity
 @Table(name = "sr03_chats")
 public class Chat{
+
+    /**
+     * Chat id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Chat title
+     */
     @Column(name = "title")
     private String title;
 
+    /**
+     * Chat description
+     */
     @Column(name = "description")
     private String description;
 
+    /**
+     * Chat creation date
+     */
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
+    /**
+     * Chat expiration date
+     */
     @Column(name = "expiration_date")
     private LocalDateTime expirationDate;
 
+    /**
+     * Chat creator
+     */
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
 
-
-
-
-
-
+    /**
+     * Chat members
+     */
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -58,9 +78,7 @@ public class Chat{
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> members = new ArrayList<>();
 
-    public Chat() {
-
-    }
+    public Chat() {}
 
     public Chat(String title , String description , User creator, LocalDateTime creationDate, LocalDateTime expirationDate){
         this.title = title;
@@ -73,15 +91,6 @@ public class Chat{
     public Long getId(){
         return this.id;
     }
-
-//    public Long getCreatorId() {
-//        return creatorId;
-//    }
-//
-//    public void setCreatorId(Long creatorId) {
-//        this.creatorId = creatorId;
-//    }
-
 
     public void setCreationDate(LocalDateTime time){
         this.creationDate = time ;
@@ -101,25 +110,15 @@ public class Chat{
         }
 
     }
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
 
     public LocalDateTime getExpirationDate() {
         return expirationDate;
     }
 
-    public User getCreator() {
-        return creator;
-    }
     public void setCreator(User creator){this.creator = creator;}
 
     public List<User> getMembers() {
         return members;
-    }
-
-    public void inviteUser(User u){
-        //TODO : ajouter
     }
 
     public String getDescription() {
