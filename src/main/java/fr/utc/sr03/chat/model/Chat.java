@@ -110,7 +110,9 @@ public class Chat{
         }
 
     }
-
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
     public LocalDateTime getExpirationDate() {
         return expirationDate;
     }

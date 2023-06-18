@@ -12,6 +12,7 @@ const Chat = ({ chat, joinChat, deleteChat ,editChat,isInvitedChat}) => {
     };
 
     return (
+
         <tr>
             <td>{chat.title}</td>
             <td>{chat.description}</td>
