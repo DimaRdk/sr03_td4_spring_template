@@ -116,9 +116,6 @@ public class EndpointApiJson {
     @PostMapping("chat")
     @ResponseBody
     public void addNewChat( @RequestParam String creatorId,@RequestParam String title,@RequestParam String description , @RequestParam String creationDate ,@RequestParam String expirationDate ) throws UserNotFoundException {
-
-
-
         Long idTyped = Long.parseLong(creatorId);
         User creator = userRepository.findById(idTyped)
                 .orElseThrow(() -> new UserNotFoundException());
@@ -139,7 +136,6 @@ public class EndpointApiJson {
     @PutMapping("chat")
     @ResponseBody
     public void editChat(@RequestBody Chat toUpdate){
-        //TODO verifier que le chat est OK + confirmation
         chatRepository.save(toUpdate);
     }
 

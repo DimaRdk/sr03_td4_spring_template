@@ -48,7 +48,7 @@ public class ChatServer {
     public void open(Session session, @PathParam("chatid") long chatid,
                      @PathParam("pseudo") String pseudo ) {
 
-        sendMessage("L'utilsateur " + pseudo+" viens de rejuindre le chat",
+        sendMessage("L'utilisateur " + pseudo+" viens de rejoindre le chat",
                 chatid );
         session.getUserProperties().put( "pseudo", pseudo );
         session.getUserProperties().put( "chatid", chatid );
